@@ -25,8 +25,12 @@ Anything
   = Char / EOF
 
 Object
-  = "{" obj:Definition "}"
+  = "{" obj:(Definition / EmptyBody) "}"
     { return obj }
+
+EmptyBody
+  = _
+    { return Object.create(null) }
 
 Definition
   = _ head:Assignment _ tail:((Definition)*) _
@@ -39,7 +43,7 @@ Assignment
   = id:Identifier _ "=" _ val:Value ";"
     { 
       var result = Object.create(null);
-      result[id.join('')] = val.join('')
+      result[id.join('')] = val
       return result
     }
 
@@ -47,7 +51,11 @@ Identifier
   = [A-Za-z0-9]+
 
 Value
-  = [^;\n]+ / Object
+  = obj:Object { return obj }
+    / literal:Literal { return literal.join('') }
+
+Literal
+  = [^;\n]+
 
 SingleLineComment
   = "//" _ contents:OneLineString NewLine
