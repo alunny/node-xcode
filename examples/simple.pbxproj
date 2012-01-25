@@ -5,4 +5,13 @@
     };
     objectVersion = 45;
     rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+    objects = {
+/* Begin PBXTargetDependency section */
+		301BF551109A68C00062928A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PhoneGapLib;
+			targetProxy = 301BF550109A68C00062928A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+    };
 }
