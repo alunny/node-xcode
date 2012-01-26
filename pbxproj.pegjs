@@ -179,7 +179,7 @@ StringValue
   = literal:LiteralChar+ { return literal.join('') }
 
 LiteralChar
-  = !InlineCommentOpen !LineTerminator char:[^;\n]
+  = !InlineCommentOpen !LineTerminator char:[^;,\n]
     { return char }
 
 /*
