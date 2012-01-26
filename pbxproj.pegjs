@@ -44,12 +44,56 @@ AssignmentList
     }
 
 Assignment
+  = SimpleAssignment / CommentedAssignment
+
+SimpleAssignment
   = id:Identifier _ "=" _ val:Value ";"
     { 
       var result = Object.create(null);
       result[id] = val
       return result
     }
+
+CommentedAssignment
+  = commentedId:CommentedIdentifier _ "=" _ val:Value ";"
+    {
+        commentedId[commentedId.id] = val;
+        delete(commentedId, 'id')
+        return commentedId;
+    }
+    /
+    id:Identifier _ "=" _ commentedVal:CommentedValue ";"
+    {
+        var result = Object.create(null);
+        result[id] = commentedVal.value;
+        result[id + "_comment"] = commentedVal.comment;
+        return result;
+    }
+
+CommentedIdentifier
+  = id:Identifier _ comment:InlineComment
+    {
+        var result = Object.create(null);
+        result.id = id;
+        result[id + "_comment"] = comment.trim();
+        return result
+    }
+
+CommentedValue
+  = literal:Literal _ comment:InlineComment
+    {
+        var result = Object.create(null)
+        result.comment = comment.trim();
+        result.value = literal.trim();
+        return result;
+    }
+
+InlineComment
+  = "/*" body:[^*]+ "*/"
+    { return body.join('') }
+
+InlineCommentOpen
+  = "/*"
 
 DelimitedSection
   = begin:DelimitedSectionBegin _ fields:(AssignmentList / EmptyBody) _ DelimitedSectionEnd
@@ -74,10 +118,15 @@ Identifier
 
 Value
   = obj:Object { return obj }
-    / literal:Literal { return literal.join('') }
+    / literal:Literal { return literal }
 
 Literal
-  = [^;\n]+
+  = literal:LiteralChar+
+    { return literal.join('') }
+
+LiteralChar
+  = !InlineCommentOpen char:[^;\n]
+    { return char }
 
 SingleLineComment
   = "//" _ contents:OneLineString NewLine
