@@ -36,7 +36,7 @@ EmptyBody
     { return Object.create(null) }
 
 AssignmentList
-  = _ head:Assignment _ tail:((AssignmentList)*) _
+  = _ head:Assignment _ tail:AssignmentList* _
     { 
       if (tail) return merge(head,tail)
       else return head
@@ -130,7 +130,36 @@ DelimitedSectionEnd
  * Arrays: lists of values, possible wth comments
  */
 Array
-  = "(" [^)]+ ")"
+  = "(" arr:(ArrayBody / EmptyArray ) ")" { return arr }
+
+EmptyArray
+  = _ { return [] }
+
+ArrayBody
+  = _ head:ArrayEntry _ tail:ArrayBody? _
+    {
+        if (tail) {
+            tail.unshift(head);
+            return tail;
+        } else {
+            return [head];
+        }
+    }
+
+ArrayEntry
+  = SimpleArrayEntry / CommentedArrayEntry
+
+SimpleArrayEntry
+  = val:Value "," { return val }
+
+CommentedArrayEntry
+  = val:Value _ comment:InlineComment ","
+    {
+        var result = Object.create(null);
+        result.value = val;
+        result.comment = comment;
+        return result;
+    }
 
 /*
  *  Identifiers and Values
