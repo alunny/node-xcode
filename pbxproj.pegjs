@@ -77,7 +77,7 @@ CommentedIdentifier
     }
 
 CommentedValue
-  = literal:Literal _ comment:InlineComment
+  = literal:Value _ comment:InlineComment
     {
         var result = Object.create(null)
         result.comment = comment.trim();
@@ -117,22 +117,23 @@ Identifier
     { return id.join('') }
 
 Value
-  = obj:Object { return obj } / NumberValue / StringValue
-
-Literal
-  = StringValue
+  = Object / NumberValue / StringValue
 
 NumberValue
-  = number:Digit+ { return parseInt(number, 10) }
+  = !Alpha number:Digit+ !Alpha
+    { return parseInt(number, 10) }
 
 Digit
   = [0-9]
+
+Alpha
+  = [A-Za-z]
 
 StringValue
   = literal:LiteralChar+ { return literal.join('') }
 
 LiteralChar
-  = !InlineCommentOpen char:[^;\n]
+  = !InlineCommentOpen !LineTerminator char:[^;\n]
     { return char }
 
 SingleLineComment
@@ -152,6 +153,9 @@ whitespace
 NonLine
   = !NewLine char:Char
     { return char }
+
+LineTerminator
+  = NewLine / ";"
 
 NewLine
     = [\n\r]

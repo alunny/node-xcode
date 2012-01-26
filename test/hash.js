@@ -27,3 +27,8 @@ exports['should split out properties and comments'] = function (test) {
     test.equal(project['rootObject_comment'], 'Project object');
     test.done();
 }
+
+exports['should parse non-commented hash things'] = function (test) {
+    test.equal(project.nonObject, '29B97313FDCFA39411CA2CEF');
+    test.done();
+}
