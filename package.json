@@ -12,5 +12,7 @@
   "dependencies": {
     "pegjs":"0.6.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodeunit":"0.6.4"
+  }
 }
