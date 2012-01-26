@@ -8,6 +8,9 @@
     }
 }
 
+/*
+ *  Project: point of entry from pbxproj file
+ */
 Project
   = headComment:SingleLineComment? obj:Object NewLine
     {
@@ -21,6 +24,9 @@ Project
         return proj;
     }
 
+/*
+ *  Object: basic hash data structure with Assignments
+ */
 Object
   = "{" obj:(AssignmentList / EmptyBody) "}"
     { return obj }
@@ -40,6 +46,11 @@ AssignmentList
         return section
     }
 
+/*
+ *  Assignments
+ *  can be simple "key = value"
+ *  or commented "key /* real key * / = value"
+ */
 Assignment
   = SimpleAssignment / CommentedAssignment
 
@@ -95,6 +106,9 @@ InlineCommentOpen
 InlineCommentClose
   = "*/"
 
+/*
+ *  DelimitedSection - ad hoc project structure pbxproj files use
+ */
 DelimitedSection
   = begin:DelimitedSectionBegin _ fields:(AssignmentList / EmptyBody) _ DelimitedSectionEnd
     {
@@ -112,6 +126,15 @@ DelimitedSectionEnd
   = "/* End " sectionName:Identifier " section */" NewLine
     { return { name: sectionName } }
 
+/*
+ * Arrays: lists of values, possible wth comments
+ */
+Array
+  = "(" [^)]+ ")"
+
+/*
+ *  Identifiers and Values
+ */
 Identifier
   = id:[A-Za-z0-9]+
     { return id.join('') }
@@ -119,18 +142,9 @@ Identifier
 Value
   = Object / Array / NumberValue / StringValue
 
-Array
-  = "(" [^)]+ ")"
-
 NumberValue
   = !Alpha number:Digit+ !Alpha
     { return parseInt(number, 10) }
-
-Digit
-  = [0-9]
-
-Alpha
-  = [A-Za-z]
 
 StringValue
   = literal:LiteralChar+ { return literal.join('') }
@@ -139,6 +153,9 @@ LiteralChar
   = !InlineCommentOpen !LineTerminator char:[^;\n]
     { return char }
 
+/*
+ * SingleLineComment - used for the encoding comment
+ */
 SingleLineComment
   = "//" _ contents:OneLineString NewLine
     { return contents }
@@ -146,6 +163,15 @@ SingleLineComment
 OneLineString
   = contents:NonLine*
     { return contents.join('') }
+
+/*
+ *  Simple character checking rules
+ */
+Digit
+  = [0-9]
+
+Alpha
+  = [A-Za-z]
 
 _ "whitespace"
   = whitespace*
