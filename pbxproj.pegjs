@@ -84,7 +84,7 @@ CommentedValue
     {
         var result = Object.create(null)
         result.comment = comment.trim();
-        result.value = literal.trim();
+        result.value = literal;
         return result;
     }
 
@@ -117,12 +117,19 @@ Identifier
     { return id.join('') }
 
 Value
-  = obj:Object { return obj }
-    / literal:Literal { return literal }
+  = obj:Object { return obj } / NumberValue / StringValue
 
 Literal
-  = literal:LiteralChar+
-    { return literal.join('') }
+  = StringValue
+
+NumberValue
+  = number:Digit+ { return parseInt(number, 10) }
+
+Digit
+  = [0-9]
+
+StringValue
+  = literal:LiteralChar+ { return literal.join('') }
 
 LiteralChar
   = !InlineCommentOpen char:[^;\n]
