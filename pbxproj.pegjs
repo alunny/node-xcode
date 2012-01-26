@@ -21,9 +21,6 @@ Project
         return proj;
     }
 
-Anything
-  = Char / EOF
-
 Object
   = "{" obj:(AssignmentList / EmptyBody) "}"
     { return obj }
@@ -89,11 +86,14 @@ CommentedValue
     }
 
 InlineComment
-  = "/*" body:[^*]+ "*/"
+  = InlineCommentOpen body:[^*]+ InlineCommentClose
     { return body.join('') }
 
 InlineCommentOpen
   = "/*"
+
+InlineCommentClose
+  = "*/"
 
 DelimitedSection
   = begin:DelimitedSectionBegin _ fields:(AssignmentList / EmptyBody) _ DelimitedSectionEnd
@@ -139,9 +139,6 @@ SingleLineComment
   = "//" _ contents:OneLineString NewLine
     { return contents }
 
-Terminator
-    = NewLine? EOF
-
 OneLineString
   = contents:NonLine*
     { return contents.join('') }
@@ -158,13 +155,6 @@ NonLine
 
 NewLine
     = [\n\r]
-
-EOF
-    = !.
-
-String
-  = str:Char*
-    { return str.join('') }
 
 Char
   = .
