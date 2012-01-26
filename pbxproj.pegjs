@@ -117,7 +117,10 @@ Identifier
     { return id.join('') }
 
 Value
-  = Object / NumberValue / StringValue
+  = Object / Array / NumberValue / StringValue
+
+Array
+  = "(" [^)]+ ")"
 
 NumberValue
   = !Alpha number:Digit+ !Alpha
