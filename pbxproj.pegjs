@@ -41,9 +41,10 @@ AssignmentList
       if (tail) return merge(head,tail)
       else return head
     }
-    / _ section:DelimitedSection _
+    / _ head:DelimitedSection _ tail:AssignmentList*
     {
-        return section
+      if (tail) return merge(head,tail)
+      else return head
     }
 
 /*
