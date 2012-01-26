@@ -84,7 +84,7 @@ CommentedValue
     {
         var result = Object.create(null)
         result.comment = comment.trim();
-        result.value = literal;
+        result.value = literal.trim();
         return result;
     }
 

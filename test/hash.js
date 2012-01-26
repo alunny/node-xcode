@@ -21,3 +21,9 @@ exports['should parse an empty object'] = function (test) {
     test.equal(Object.keys(empty).length, 0);
     test.done()
 }
+
+exports['should split out properties and comments'] = function (test) {
+    test.equal(project.rootObject, '29B97313FDCFA39411CA2CEA');
+    test.equal(project['rootObject_comment'], 'Project object');
+    test.done();
+}
