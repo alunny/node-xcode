@@ -25,30 +25,52 @@ Anything
   = Char / EOF
 
 Object
-  = "{" obj:(Definition / EmptyBody) "}"
+  = "{" obj:(AssignmentList / EmptyBody) "}"
     { return obj }
 
 EmptyBody
   = _
     { return Object.create(null) }
 
-Definition
-  = _ head:Assignment _ tail:((Definition)*) _
+AssignmentList
+  = _ head:Assignment _ tail:((AssignmentList)*) _
     { 
       if (tail) return merge(head,tail)
       else return head
+    }
+    / _ section:DelimitedSection _
+    {
+        return section
     }
 
 Assignment
   = id:Identifier _ "=" _ val:Value ";"
     { 
       var result = Object.create(null);
-      result[id.join('')] = val
+      result[id] = val
       return result
     }
 
+DelimitedSection
+  = begin:DelimitedSectionBegin _ fields:(AssignmentList / EmptyBody) _ DelimitedSectionEnd
+    {
+        var section = {}
+        section[begin.name] = fields
+
+        return section
+    }
+
+DelimitedSectionBegin
+  = "/* Begin " sectionName:Identifier " section */" NewLine
+    { return { name: sectionName } }
+
+DelimitedSectionEnd
+  = "/* End " sectionName:Identifier " section */" NewLine
+    { return { name: sectionName } }
+
 Identifier
-  = [A-Za-z0-9]+
+  = id:[A-Za-z0-9]+
+    { return id.join('') }
 
 Value
   = obj:Object { return obj }
