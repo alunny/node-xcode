@@ -166,17 +166,38 @@ CommentedArrayEntry
  *  Identifiers and Values
  */
 Identifier
-  = id:[A-Za-z0-9]+
-    { return id.join('') }
+  = id:[A-Za-z0-9_]+ { return id.join('') }
+  / QuotedString
 
 Value
   = Object / Array / NumberValue / StringValue
 
 NumberValue
+  = DecimalValue / IntegerValue
+
+DecimalValue
+  = IntegerValue "." IntegerValue
+
+IntegerValue
   = !Alpha number:Digit+ !Alpha
     { return parseInt(number, 10) }
 
 StringValue
+ = QuotedString / LiteralString
+
+QuotedString
+ = DoubleQuote str:QuotedBody DoubleQuote { return str }
+
+QuotedBody
+ = str:NonQuote+ { return str.join('') }
+
+NonQuote
+  = EscapedQuote / !DoubleQuote char:. { return char }
+
+EscapedQuote
+  = "\\" DoubleQuote { return '\"' }
+
+LiteralString
   = literal:LiteralChar+ { return literal.join('') }
 
 LiteralChar
@@ -202,6 +223,9 @@ Digit
 
 Alpha
   = [A-Za-z]
+
+DoubleQuote
+  = '"'
 
 _ "whitespace"
   = whitespace*
