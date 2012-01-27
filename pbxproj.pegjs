@@ -113,7 +113,7 @@ InlineCommentClose
 DelimitedSection
   = begin:DelimitedSectionBegin _ fields:(AssignmentList / EmptyBody) _ DelimitedSectionEnd
     {
-        var section = {}
+        var section = Object.create(null);
         section[begin.name] = fields
 
         return section
