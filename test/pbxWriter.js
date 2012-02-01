@@ -7,7 +7,7 @@ function testProjectContents(filename, test) {
         content = fs.readFileSync(filename, 'utf-8');
 
     // normalize tabs vs strings
-    content = content.replace(/\t/g, '    ');
+    content = content.replace(/    /g, '\t');
 
     myProj.parse(function (err, projHash) {
         var written = myProj.writeSync();
