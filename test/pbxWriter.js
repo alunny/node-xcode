@@ -54,5 +54,8 @@ exports.writeSync = {
     },
     'should write out the "build-config" test': function (test) {
         testProjectContents('test/parser/projects/build-config.pbxproj', test);
+    },
+    'should write out the "nested-object" test': function (test) {
+        testProjectContents('test/parser/projects/nested-object.pbxproj', test);
     }
 }
