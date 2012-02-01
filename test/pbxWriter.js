@@ -64,5 +64,8 @@ exports.writeSync = {
     },
     'should write out the "build-files" test': function (test) {
         testProjectContents('test/parser/projects/build-files.pbxproj', test);
+    },
+    'should write out the "file-references" test': function (test) {
+        testProjectContents('test/parser/projects/file-references.pbxproj', test);
     }
 }
