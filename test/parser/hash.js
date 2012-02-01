@@ -13,6 +13,7 @@ exports['should have the top-line comment in place'] = function (test) {
 
 exports['should parse a numeric attribute'] = function (test) {
     test.strictEqual(project.archiveVersion, 1);
+    test.strictEqual(project.objectVersion, 45);
     test.done()
 }
 
