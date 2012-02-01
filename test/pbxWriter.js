@@ -32,6 +32,10 @@ function testContentsInDepth(filename, test) {
 
         test.equal(writtenLines.length, contentLines.length);
 
+        for (var i=0; i<writtenLines.length; i++) {
+            test.equal(writtenLines[i], contentLines[i])
+        }
+
         test.done();
     });
 }
@@ -57,5 +61,8 @@ exports.writeSync = {
     },
     'should write out the "nested-object" test': function (test) {
         testProjectContents('test/parser/projects/nested-object.pbxproj', test);
+    },
+    'should write out the "build-files" test': function (test) {
+        testProjectContents('test/parser/projects/build-files.pbxproj', test);
     }
 }
