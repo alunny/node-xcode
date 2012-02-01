@@ -17,6 +17,25 @@ function testProjectContents(filename, test) {
     });
 }
 
+// for debugging failing tests
+function testContentsInDepth(filename, test) {
+    var myProj = new pbx(filename),
+        content = fs.readFileSync(filename, 'utf-8');
+
+    // normalize tabs vs strings
+    content = content.replace(/    /g, '\t');
+
+    myProj.parse(function (err, projHash) {
+        var written = myProj.writeSync(),
+            writtenLines = written.split('\n')
+            contentLines = content.split('\n')
+
+        test.equal(writtenLines.length, contentLines.length);
+
+        test.done();
+    });
+}
+
 exports.writeSync = {
     'should write out the "hash" test': function (test) {
         testProjectContents('test/parser/projects/hash.pbxproj', test);
@@ -29,5 +48,11 @@ exports.writeSync = {
     },
     'should write out the "two-sections" test': function (test) {
         testProjectContents('test/parser/projects/two-sections.pbxproj', test);
+    },
+    'should write out the "section-entries" test': function (test) {
+        testProjectContents('test/parser/projects/section-entries.pbxproj', test);
+    },
+    'should write out the "build-config" test': function (test) {
+        testProjectContents('test/parser/projects/build-config.pbxproj', test);
     }
 }

@@ -5,8 +5,6 @@
 	};
 	objectVersion = 45;
 	objects = {
-
-
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -109,7 +107,6 @@
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
-
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }
