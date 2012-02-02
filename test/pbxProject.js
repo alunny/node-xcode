@@ -55,3 +55,27 @@ exports['allUuids function'] = {
        test.done();
    }
 }
+
+exports['generateUuid function'] = {
+    'should return a 24 character string': function (test) {
+       var project = new pbx('.'),
+           newUUID;
+
+       project.hash = buildConfig;
+       newUUID = project.generateUuid();
+
+       test.equal(newUUID.length, 24);
+       test.done();
+    },
+    'should be an uppercase hex string': function (test) {
+       var project = new pbx('.'),
+           uHex = /^[A-F0-9]{24}$/,
+           newUUID;
+
+       project.hash = buildConfig;
+       newUUID = project.generateUuid();
+
+       test.ok(uHex.test(newUUID));
+       test.done();
+    }
+}
