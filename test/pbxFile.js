@@ -61,3 +61,12 @@ exports['group'] = {
         test.done();
     }
 }
+
+exports['basename'] = {
+    'should be as expected': function (test) {
+        var sourceFile = new pbxFile('Plugins/ChildBrowser.m');
+
+        test.equal('ChildBrowser.m', sourceFile.basename);
+        test.done();
+    }
+}
