@@ -1,4 +1,6 @@
-var pbx = require('../lib/pbxProject')
+var pbx = require('../lib/pbxProject'),
+    buildConfig = require('./fixtures/buildFiles'),
+    project;
 
 exports['parse function'] = {
     'should emit an "end" event': function (test) {
@@ -39,4 +41,17 @@ exports['parse function'] = {
             test.done();
         })
     }
+}
+
+exports['allUuids function'] = {
+   'should return the right amount of uuids': function (test) {
+       var project = new pbx('.'),
+           uuids;
+
+       project.hash = buildConfig;
+       uuids = project.allUuids();
+
+       test.equal(uuids.length, 4);
+       test.done();
+   }
 }
