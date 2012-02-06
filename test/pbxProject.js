@@ -2,6 +2,21 @@ var pbx = require('../lib/pbxProject'),
     buildConfig = require('./fixtures/buildFiles'),
     project;
 
+exports['creation'] = {
+    'should create a pbxProject with the new operator': function (test) {
+        var myProj = new pbx('test/parser/projects/hash.pbxproj');
+
+        test.ok(myProj instanceof pbx);
+        test.done();
+    },
+    'should create a pbxProject without the new operator': function (test) {
+        var myProj = pbx('test/parser/projects/hash.pbxproj');
+
+        test.ok(myProj instanceof pbx);
+        test.done();
+    }
+}
+
 exports['parse function'] = {
     'should emit an "end" event': function (test) {
         var myProj = new pbx('test/parser/projects/hash.pbxproj');
