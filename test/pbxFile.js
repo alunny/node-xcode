@@ -29,6 +29,13 @@ exports['lastType'] = {
         test.done();
     },
 
+    'should detect that a .dylib path means "compiled.mach-o.dylib"': function (test) {
+        var sourceFile = new pbxFile('libsqlite3.dylib');
+
+        test.equal('"compiled.mach-o.dylib"', sourceFile.lastType);
+        test.done();
+    },
+
     'should allow lastType to be overridden': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m',
                 { lastType: 'somestupidtype' });
@@ -52,6 +59,12 @@ exports['group'] = {
         test.equal('Sources', sourceFile.group);
         test.done();
     },
+    'should be Frameworks for frameworks': function (test) {
+        var framework = new pbxFile('libsqlite3.dylib');
+
+        test.equal('Frameworks', framework.group);
+        test.done();
+    },
     'should be Resources for all other files': function (test) {
         var headerFile = new pbxFile('Plugins/ChildBrowser.h'),
             xibFile = new pbxFile('Plugins/ChildBrowser.xib');
@@ -67,6 +80,46 @@ exports['basename'] = {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m');
 
         test.equal('ChildBrowser.m', sourceFile.basename);
+        test.done();
+    }
+}
+
+exports['sourceTree'] = {
+    'should be SDKROOT for frameworks': function (test) {
+        var sourceFile = new pbxFile('libsqlite3.dylib');
+
+        test.equal('SDKROOT', sourceFile.sourceTree);
+        test.done();
+    },
+
+    'should default to SOURCE_ROOT otherwise': function (test) {
+        var sourceFile = new pbxFile('Plugins/ChildBrowser.m');
+
+        test.equal('SOURCE_ROOT', sourceFile.sourceTree);
+        test.done();
+    },
+
+    'should be overridable either way': function (test) {
+        var sourceFile = new pbxFile('Plugins/ChildBrowser.m',
+            { sourceTree: 'SOMETHING'});
+
+        test.equal('SOMETHING', sourceFile.sourceTree);
+        test.done();
+    }
+}
+
+exports['path'] = {
+    'should be "usr/lib" for frameworks (relative to SDKROOT)': function (test) {
+        var sourceFile = new pbxFile('libsqlite3.dylib');
+
+        test.equal('usr/lib/libsqlite3.dylib', sourceFile.path);
+        test.done();
+    },
+
+    'should default to the first argument otherwise': function (test) {
+        var sourceFile = new pbxFile('Plugins/ChildBrowser.m');
+
+        test.equal('Plugins/ChildBrowser.m', sourceFile.path);
         test.done();
     }
 }
