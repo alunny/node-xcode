@@ -2,7 +2,7 @@
   "author": "Andrew Lunny <alunny@gmail.com>",
   "name": "xcode",
   "description": "tools for working with xcode projects",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "main":"index.js",
   "repository": {
     "url": ""

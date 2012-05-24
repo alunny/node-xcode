@@ -91,7 +91,7 @@ exports.addResourceFile = {
         test.equal(fileRefEntry.lastKnownFileType, '"wrapper.plug-in"');
         test.equal(fileRefEntry.name, 'assets.bundle');
         test.equal(fileRefEntry.path, 'Plugins/assets.bundle');
-        test.equal(fileRefEntry.sourceTree, '"<group>"');
+        test.equal(fileRefEntry.sourceTree, 'SOURCE_ROOT');
 
         test.done();
     },

@@ -91,7 +91,7 @@ exports.addSourceFile = {
         test.equal(fileRefEntry.lastKnownFileType, 'sourcecode.c.objc');
         test.equal(fileRefEntry.name, 'file.m');
         test.equal(fileRefEntry.path, 'Plugins/file.m');
-        test.equal(fileRefEntry.sourceTree, '"<group>"');
+        test.equal(fileRefEntry.sourceTree, 'SOURCE_ROOT');
 
         test.done();
     },
