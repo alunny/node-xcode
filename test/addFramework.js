@@ -109,13 +109,13 @@ exports.addFramework = {
         var newFile = proj.addFramework('libsqlite3.dylib'),
             frameworks = proj.pbxFrameworksBuildPhaseObj();
 
-        test.equal(frameworks.files.length, 13);
+        test.equal(frameworks.files.length, 16);
         test.done();
     },
     'should have the right values for the Sources entry': function (test) {
         var newFile = proj.addFramework('libsqlite3.dylib'),
             frameworks = proj.pbxFrameworksBuildPhaseObj(),
-            framework = frameworks.files[12];
+            framework = frameworks.files[15];
 
         test.equal(framework.comment, 'libsqlite3.dylib in Frameworks');
         test.equal(framework.value, newFile.uuid);
