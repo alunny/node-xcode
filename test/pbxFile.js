@@ -92,10 +92,10 @@ exports['sourceTree'] = {
         test.done();
     },
 
-    'should default to SOURCE_ROOT otherwise': function (test) {
+    'should default to "<group>" otherwise': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m');
 
-        test.equal('SOURCE_ROOT', sourceFile.sourceTree);
+        test.equal('"<group>"', sourceFile.sourceTree);
         test.done();
     },
 
