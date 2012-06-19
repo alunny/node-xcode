@@ -1,5 +1,5 @@
 # node-xcode
 
-> tools and utilities for working with xcode/iOS from the command-line
+> parser for xcodeproj/project.pbxproj files
 
 Not much to see yet
