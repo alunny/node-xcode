@@ -48,6 +48,14 @@ exports['parse function'] = {
             test.done();
         })
     },
+    'should handle projects with comments in the header': function (test) {
+        var myProj = new pbx('test/parser/projects/comments.pbxproj');
+
+        myProj.parse(function (err, projHash) {
+            test.ok(projHash);
+            test.done();
+        })
+    },
     'should attach the hash object to the pbx object': function (test) {
         var myProj = new pbx('test/parser/projects/hash.pbxproj');
 
