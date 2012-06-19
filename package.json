@@ -16,5 +16,8 @@
   },
   "devDependencies": {
     "nodeunit":"0.6.4"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/nodeunit test/parser test",
   }
 }
