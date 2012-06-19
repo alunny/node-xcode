@@ -1,11 +1,11 @@
 {
   "author": "Andrew Lunny <alunny@gmail.com>",
   "name": "xcode",
-  "description": "tools for working with xcode projects",
-  "version": "0.3.2",
+  "description": "parser for xcodeproj/project.pbxproj files",
+  "version": "0.3.3",
   "main":"index.js",
   "repository": {
-    "url": ""
+    "url": "https://github.com/alunny/node-xcode.git"
   },
   "engines": {
     "node": "~0.6.7"
@@ -18,6 +18,6 @@
     "nodeunit":"0.6.4"
   },
   "scripts": {
-    "test": "node_modules/.bin/nodeunit test/parser test",
+    "test": "node_modules/.bin/nodeunit test/parser test"
   }
 }
