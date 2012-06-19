@@ -55,6 +55,14 @@ exports['parse function'] = {
             test.ok(myProj.hash);
             test.done();
         })
+    },
+    'it should pass an error object back when the parsing fails': function (test) {
+        var myProj = new pbx('test/parser/projects/fail.pbxproj');
+
+        myProj.parse(function (err, projHash) {
+            test.ok(err);
+            test.done();
+        })
     }
 }
 
