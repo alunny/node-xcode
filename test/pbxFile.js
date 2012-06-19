@@ -36,6 +36,13 @@ exports['lastType'] = {
         test.done();
     },
 
+    'should detect that a .framework path means wrapper.framework': function (test) {
+        var sourceFile = new pbxFile('MessageUI.framework');
+
+        test.equal('wrapper.framework', sourceFile.lastType);
+        test.done();
+    },
+
     'should allow lastType to be overridden': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m',
                 { lastType: 'somestupidtype' });
@@ -85,8 +92,15 @@ exports['basename'] = {
 }
 
 exports['sourceTree'] = {
-    'should be SDKROOT for frameworks': function (test) {
+    'should be SDKROOT for dylibs': function (test) {
         var sourceFile = new pbxFile('libsqlite3.dylib');
+
+        test.equal('SDKROOT', sourceFile.sourceTree);
+        test.done();
+    },
+
+    'should be SDKROOT for frameworks': function (test) {
+        var sourceFile = new pbxFile('MessageUI.framework');
 
         test.equal('SDKROOT', sourceFile.sourceTree);
         test.done();
@@ -109,12 +123,20 @@ exports['sourceTree'] = {
 }
 
 exports['path'] = {
-    'should be "usr/lib" for frameworks (relative to SDKROOT)': function (test) {
+    'should be "usr/lib" for dylibs (relative to SDKROOT)': function (test) {
         var sourceFile = new pbxFile('libsqlite3.dylib');
 
         test.equal('usr/lib/libsqlite3.dylib', sourceFile.path);
         test.done();
     },
+
+    'should be "System/Library/Frameworks" for frameworks': function (test) {
+        var sourceFile = new pbxFile('MessageUI.framework');
+
+        test.equal('System/Library/Frameworks/MessageUI.framework', sourceFile.path);
+        test.done();
+    },
+
 
     'should default to the first argument otherwise': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m');
