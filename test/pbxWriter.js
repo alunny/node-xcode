@@ -33,7 +33,8 @@ function testContentsInDepth(filename, test) {
         test.equal(writtenLines.length, contentLines.length);
 
         for (var i=0; i<writtenLines.length; i++) {
-            test.equal(writtenLines[i], contentLines[i])
+            test.equal(writtenLines[i], contentLines[i],
+                'match failed on line ' + (i+1))
         }
 
         test.done();
@@ -58,6 +59,9 @@ exports.writeSync = {
     },
     'should write out the "build-config" test': function (test) {
         testProjectContents('test/parser/projects/build-config.pbxproj', test);
+    },
+    'should write out the "header-search" test': function (test) {
+        testProjectContents('test/parser/projects/header-search.pbxproj', test);
     },
     'should write out the "nested-object" test': function (test) {
         testProjectContents('test/parser/projects/nested-object.pbxproj', test);
