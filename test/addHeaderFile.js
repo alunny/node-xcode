@@ -54,7 +54,7 @@ exports.addHeaderFile = {
         test.equal(fileRefEntry.fileEncoding, 4);
         test.equal(fileRefEntry.lastKnownFileType, 'sourcecode.c.h');
         test.equal(fileRefEntry.name, 'file.h');
-        test.equal(fileRefEntry.path, 'Plugins/file.h');
+        test.equal(fileRefEntry.path, 'file.h');
         test.equal(fileRefEntry.sourceTree, '"<group>"');
 
         test.done();

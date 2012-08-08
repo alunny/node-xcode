@@ -82,6 +82,8 @@ exports.addResourceFile = {
         test.done();
     },
     'should add the PBXFileReference object correctly': function (test) {
+        delete proj.pbxGroupByName('Plugins').path;
+
         var newFile = proj.addResourceFile('Plugins/assets.bundle'),
             fileRefSection = proj.pbxFileReferenceSection(),
             fileRefEntry = fileRefSection[newFile.fileRef];
@@ -126,5 +128,19 @@ exports.addResourceFile = {
         test.equal(sourceObj.comment, 'assets.bundle in Resources');
         test.equal(sourceObj.value, newFile.uuid);
         test.done();
+    },
+    'should remove "Plugins/" from path if group path is set': function (test) {
+        var plugins = proj.pbxGroupByName('Plugins'),
+            newFile;
+
+        plugins.path = '"Test200/Plugins"';
+        newFile = proj.addResourceFile('Plugins/assets.bundle');
+
+        test.equal(newFile.path, 'assets.bundle');
+        test.done();
+    },
+    tearDown: function (callback) {
+        delete proj.pbxGroupByName('Plugins').path;
+        callback();
     }
 }
