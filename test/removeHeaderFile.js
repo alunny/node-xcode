@@ -13,7 +13,7 @@ exports.setUp = function (callback) {
     callback();
 }
 
-exports.addHeaderFile = {
+exports.removeHeaderFile = {
     'should return a pbxFile': function (test) {
         var newFile = proj.addHeaderFile('file.h');
 
@@ -99,22 +99,6 @@ exports.addHeaderFile = {
             plugins = proj.pbxGroupByName('Plugins');
 
         test.equal(plugins.children.length, 0);
-        
-        test.done();
-    },
-    'should have the right values for the PBXGroup entry': function (test) {
-        var newFile = proj.addHeaderFile('Plugins/file.h'),
-            plugins = proj.pbxGroupByName('Plugins'),
-            pluginObj = plugins.children[0];
-
-        test.equal(pluginObj.comment, 'file.h');
-        test.equal(pluginObj.value, newFile.fileRef);
-        
-        var deletedFile = proj.removeHeaderFile('Plugins/file.h'),
-            plugins = proj.pbxGroupByName('Plugins'),
-            pluginObj = plugins.children[0];
-
-        test.ok(!pluginObj);
         
         test.done();
     }
