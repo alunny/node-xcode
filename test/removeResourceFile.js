@@ -165,7 +165,7 @@ exports.removeResourceFile = {
         test.equal(plugins.children.length, 0);
         test.done();
     },
-    'should remove to the PBXSourcesBuildPhase': function (test) {
+    'should remove from the PBXSourcesBuildPhase': function (test) {
         var newFile = proj.addResourceFile('Plugins/assets.bundle'),
             sources = proj.pbxResourcesBuildPhaseObj();
 
