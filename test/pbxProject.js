@@ -1,5 +1,6 @@
 var pbx = require('../lib/pbxProject'),
     buildConfig = require('./fixtures/buildFiles'),
+    fs = require('fs'),
     project;
 
 exports['creation'] = {
@@ -15,6 +16,15 @@ exports['creation'] = {
         test.ok(myProj instanceof pbx);
         test.done();
     }
+}
+
+exports['parseSync function'] = {
+  'should return the hash object': function (test) {
+        var myProj = new pbx('test/parser/projects/hash.pbxproj')
+          , projHash = myProj.parseSync();
+        test.ok(projHash);
+        test.done();
+  }
 }
 
 exports['parse function'] = {
@@ -108,5 +118,27 @@ exports['generateUuid function'] = {
 
        test.ok(uHex.test(newUUID));
        test.done();
+    }
+}
+
+var bcpbx = 'test/parser/projects/build-config.pbxproj';
+var original_pbx = fs.readFileSync(bcpbx, 'utf-8');
+
+exports['updateProductName function'] = {
+    setUp:function(callback) {
+        callback();
+    },
+    tearDown:function(callback) {
+        fs.writeFileSync(bcpbx, original_pbx, 'utf-8');
+        callback();
+    },
+    'should change the PRODUCT_NAME field in the .pbxproj file': function (test) {
+        var myProj = new pbx('test/parser/projects/build-config.pbxproj');
+        myProj.parse(function(err, hash) {
+            myProj.updateProductName('furious anger');
+            var newContents = myProj.writeSync();
+            test.ok(newContents.match(/PRODUCT_NAME\s*=\s*"furious anger"/));
+            test.done();
+        });
     }
 }
