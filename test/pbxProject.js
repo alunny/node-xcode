@@ -18,6 +18,15 @@ exports['creation'] = {
     }
 }
 
+exports['parseSync function'] = {
+  'should return the hash object': function (test) {
+        var myProj = new pbx('test/parser/projects/hash.pbxproj')
+          , projHash = myProj.parseSync();
+        test.ok(projHash);
+        test.done();
+  }
+}
+
 exports['parse function'] = {
     'should emit an "end" event': function (test) {
         var myProj = new pbx('test/parser/projects/hash.pbxproj');
