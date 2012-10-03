@@ -24,7 +24,18 @@ exports['parseSync function'] = {
           , projHash = myProj.parseSync();
         test.ok(projHash);
         test.done();
-  }
+  },
+  'should contain valid data in the returned objects hash': function (test) {
+        var myProj = new pbx('test/parser/projects/hash.pbxproj')
+          , projHash = myProj.parseSync();
+        test.ok(projHash);
+
+        test.equal(projHash.hash.project.archiveVersion, 1);
+        test.equal(projHash.hash.project.objectVersion, 45);
+        test.equal(projHash.hash.project.nonObject, '29B97313FDCFA39411CA2CEF');
+    
+        test.done();
+  },
 }
 
 exports['parse function'] = {
