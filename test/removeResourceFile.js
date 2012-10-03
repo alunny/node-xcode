@@ -132,9 +132,9 @@ exports.removeResourceFile = {
         test.done();
     },
     'should remove the PBXFileReference object correctly': function (test) {
-        delete proj.pbxGroupByName('Plugins').path;
+        delete proj.pbxGroupByName('Resources').path;
 
-        var newFile = proj.addResourceFile('Plugins/assets.bundle'),
+        var newFile = proj.addResourceFile('Resources/assets.bundle'),
             fileRefSection = proj.pbxFileReferenceSection(),
             fileRefEntry = fileRefSection[newFile.fileRef];
 
@@ -142,10 +142,10 @@ exports.removeResourceFile = {
         test.equal(fileRefEntry.fileEncoding, undefined);
         test.equal(fileRefEntry.lastKnownFileType, '"wrapper.plug-in"');
         test.equal(fileRefEntry.name, 'assets.bundle');
-        test.equal(fileRefEntry.path, 'Plugins/assets.bundle');
+        test.equal(fileRefEntry.path, 'Resources/assets.bundle');
         test.equal(fileRefEntry.sourceTree, '"<group>"');
 
-        var deletedFile = proj.removeResourceFile('Plugins/assets.bundle'),
+        var deletedFile = proj.removeResourceFile('Resources/assets.bundle'),
             fileRefSection = proj.pbxFileReferenceSection(),
             fileRefEntry = fileRefSection[deletedFile.fileRef];
 
@@ -153,32 +153,32 @@ exports.removeResourceFile = {
 
         test.done();
     },
-    'should remove from the Plugins PBXGroup group': function (test) {
-        var newFile = proj.addResourceFile('Plugins/assets.bundle'),
-            plugins = proj.pbxGroupByName('Plugins');
+    'should remove from the Resources PBXGroup group': function (test) {
+        var newFile = proj.addResourceFile('Resources/assets.bundle'),
+            resources = proj.pbxGroupByName('Resources');
 
-        test.equal(plugins.children.length, 1);
+        test.equal(resources.children.length, 10);
         
-        var deletedFile = proj.removeResourceFile('Plugins/assets.bundle'),
-            plugins = proj.pbxGroupByName('Plugins');
+        var deletedFile = proj.removeResourceFile('Resources/assets.bundle'),
+            resources = proj.pbxGroupByName('Resources');
 
-        test.equal(plugins.children.length, 0);
+        test.equal(resources.children.length, 9);
         test.done();
     },
     'should remove from the PBXSourcesBuildPhase': function (test) {
-        var newFile = proj.addResourceFile('Plugins/assets.bundle'),
+        var newFile = proj.addResourceFile('Resources/assets.bundle'),
             sources = proj.pbxResourcesBuildPhaseObj();
 
         test.equal(sources.files.length, 13);
         
-        var deletedFile = proj.removeResourceFile('Plugins/assets.bundle'),
+        var deletedFile = proj.removeResourceFile('Resources/assets.bundle'),
             sources = proj.pbxResourcesBuildPhaseObj();
 
         test.equal(sources.files.length, 12);
         test.done();
     },
     tearDown: function (callback) {
-        delete proj.pbxGroupByName('Plugins').path;
+        delete proj.pbxGroupByName('Resources').path;
         callback();
     }
 }
