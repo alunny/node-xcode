@@ -139,6 +139,77 @@ exports.addResourceFile = {
         test.equal(newFile.path, 'assets.bundle');
         test.done();
     },
+    'when added with { plugin: true }': {
+
+        'should add the PBXFileReference with the "Plugins" path': function (test) {
+            delete proj.pbxGroupByName('Plugins').path;
+                    
+            var newFile = proj.addResourceFile('Plugins/assets.bundle',
+                                                { plugin: true }),
+                fileRefSection = proj.pbxFileReferenceSection(),
+                fileRefEntry = fileRefSection[newFile.fileRef];
+                            
+            test.equal(fileRefEntry.isa, 'PBXFileReference');
+            test.equal(fileRefEntry.fileEncoding, undefined);
+            test.equal(fileRefEntry.lastKnownFileType, '"wrapper.plug-in"');
+            test.equal(fileRefEntry.name, 'assets.bundle');
+            test.equal(fileRefEntry.path, 'Plugins/assets.bundle');
+            test.equal(fileRefEntry.sourceTree, '"<group>"');
+            test.done();
+        },
+
+        'should add to the Plugins PBXGroup group': function (test) {
+            var newFile = proj.addResourceFile('Plugins/assets.bundle',
+                                                { plugin: true }),
+                plugins = proj.pbxGroupByName('Plugins');
+
+            test.equal(plugins.children.length, 1);
+            test.done();
+        },
+
+        'should have the Plugins values for the PBXGroup entry': function (test) {
+            var newFile = proj.addResourceFile('Plugins/assets.bundle',
+                                                { plugin: true }),
+                plugins = proj.pbxGroupByName('Plugins'),
+                pluginObj = plugins.children[0];
+
+            test.equal(pluginObj.comment, 'assets.bundle');
+            test.equal(pluginObj.value, newFile.fileRef);
+            test.done();
+        },
+
+        'should add to the PBXSourcesBuildPhase': function (test) {
+            var newFile = proj.addResourceFile('Plugins/assets.bundle',
+                                                { plugin: true }),
+                sources = proj.pbxResourcesBuildPhaseObj();
+
+            test.equal(sources.files.length, 13);
+            test.done();
+        },
+
+        'should have the right values for the Sources entry': function (test) {
+            var newFile = proj.addResourceFile('Plugins/assets.bundle',
+                                                { plugin: true }),
+                sources = proj.pbxResourcesBuildPhaseObj(),
+                sourceObj = sources.files[12];
+
+            test.equal(sourceObj.comment, 'assets.bundle in Resources');
+            test.equal(sourceObj.value, newFile.uuid);
+            test.done();
+        },
+
+        'should remove "Plugins/" from path if group path is set': function (test) {
+            var plugins = proj.pbxGroupByName('Plugins'),
+                newFile;
+
+            plugins.path = '"Test200/Plugins"';
+            newFile = proj.addResourceFile('Plugins/assets.bundle',
+                                            { plugin: true });
+
+            test.equal(newFile.path, 'assets.bundle');
+            test.done();
+        }
+    },
     tearDown: function (callback) {
         delete proj.pbxGroupByName('Resources').path;
         callback();
