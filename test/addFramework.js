@@ -46,7 +46,7 @@ exports.addFramework = {
         test.done();
     },
     'should add the PBXFileReference object correctly': function (test) {
-        var newFile = proj.addHeaderFile('libsqlite3.dylib'),
+        var newFile = proj.addFramework('libsqlite3.dylib'),
             fileRefSection = proj.pbxFileReferenceSection(),
             fileRefEntry = fileRefSection[newFile.fileRef];
 
