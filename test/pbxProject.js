@@ -1,5 +1,6 @@
 var pbx = require('../lib/pbxProject'),
     buildConfig = require('./fixtures/buildFiles'),
+    jsonProject = require('./fixtures/full-project'),
     fs = require('fs'),
     project;
 
@@ -151,5 +152,15 @@ exports['updateProductName function'] = {
             test.ok(newContents.match(/PRODUCT_NAME\s*=\s*"furious anger"/));
             test.done();
         });
+    }
+}
+
+exports['productName field'] = {
+    'should return the product name': function (test) {
+        var newProj = new pbx('.');
+        newProj.hash = jsonProject;
+
+        test.equal(newProj.productName, 'KitchenSinktablet');
+        test.done();
     }
 }
