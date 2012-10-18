@@ -182,22 +182,42 @@ exports.addStaticLibrary = {
         test.equal(plugins.children.length, 1);
         test.done();
     },
-    'should add the right LIBRARY_SEARCH_PATHS entry for plugins': function (test) {
-        plugins = proj.pbxGroupByName('Plugins');
-        plugins.path = '"Test200/Plugins"';
+    'should add the right LIBRARY_SEARCH_PATHS entry for plugins': {
+        'with group set': function (test) {
+            plugins = proj.pbxGroupByName('Plugins');
+            plugins.path = '"Test200/Plugins"';
 
-        var newFile = proj.addStaticLibrary('libGoogleAnalytics.a',
-                                        { plugin: true }),
-            libraryPaths = librarySearchPaths(proj),
-            expectedPath = '"\\"$(SRCROOT)/Test200/Plugins\\""',
-            i, current;
+            var newFile = proj.addStaticLibrary('Plugins/libGoogleAnalytics.a',
+                                            { plugin: true }),
+                libraryPaths = librarySearchPaths(proj),
+                expectedPath = '"\\"$(SRCROOT)/Test200/Plugins\\""',
+                i, current;
 
-        for (i = 0; i < libraryPaths.length; i++) {
-            current = libraryPaths[i];
-            test.ok(current.indexOf(expectedPath) >= 0,
-                   expectedPath + ' not found in ' + current);
+            for (i = 0; i < libraryPaths.length; i++) {
+                current = libraryPaths[i];
+                test.ok(current.indexOf(expectedPath) >= 0,
+                       expectedPath + ' not found in ' + current);
+            }
+
+            test.done();
+        },
+        'without group set': function (test) {
+            plugins = proj.pbxGroupByName('Plugins');
+            delete plugins.path;
+
+            var newFile = proj.addStaticLibrary('Plugins/libGoogleAnalytics.a',
+                                            { plugin: true }),
+                libraryPaths = librarySearchPaths(proj),
+                expectedPath = '"\\"$(SRCROOT)/KitchenSinktablet/Plugins\\""',
+                i, current;
+
+            for (i = 0; i < libraryPaths.length; i++) {
+                current = libraryPaths[i];
+                test.ok(current.indexOf(expectedPath) >= 0,
+                       expectedPath + ' not found in ' + current);
+            }
+
+            test.done();
         }
-
-        test.done();
     }
 }
