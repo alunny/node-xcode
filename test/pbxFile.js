@@ -43,6 +43,13 @@ exports['lastType'] = {
         test.done();
     },
 
+    'should detect that a .a path means archive.ar': function (test) {
+        var sourceFile = new pbxFile('libGoogleAnalytics.a');
+
+        test.equal('archive.ar', sourceFile.lastType);
+        test.done();
+    },
+
     'should allow lastType to be overridden': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m',
                 { lastType: 'somestupidtype' });
@@ -78,6 +85,12 @@ exports['group'] = {
 
         test.equal('Resources', headerFile.group);
         test.equal('Resources', xibFile.group);
+        test.done();
+    },
+    'should be Frameworks for archives': function (test) {
+        var archive = new pbxFile('libGoogleAnalytics.a');
+
+        test.equal('Frameworks', archive.group);
         test.done();
     }
 }
@@ -118,6 +131,13 @@ exports['sourceTree'] = {
             { sourceTree: 'SOMETHING'});
 
         test.equal('SOMETHING', sourceFile.sourceTree);
+        test.done();
+    },
+
+    'should be  "<group>" for archives': function (test) {
+        var archive = new pbxFile('libGoogleAnalytics.a');
+
+        test.equal('"<group>"', archive.sourceTree);
         test.done();
     }
 }
