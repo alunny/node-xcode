@@ -66,6 +66,18 @@ exports.addStaticLibrary = {
 
         test.done();
     },
+    'should populate the PBXBuildFile section with 2 fields as plugin': function (test) {
+        var newFile = proj.addStaticLibrary('libGoogleAnalytics.a',
+                { plugin: true });
+            buildFileSection = proj.pbxBuildFileSection(),
+            bfsLength = Object.keys(buildFileSection).length;
+
+        test.equal(60, bfsLength);
+        test.ok(buildFileSection[newFile.uuid]);
+        test.ok(buildFileSection[newFile.uuid + '_comment']);
+
+        test.done();
+    },
     'should add the PBXBuildFile comment correctly': function (test) {
         var newFile = proj.addStaticLibrary('libGoogleAnalytics.a');
             commentKey = newFile.uuid + '_comment',
