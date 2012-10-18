@@ -21,6 +21,22 @@ function nonComments(obj) {
     return newObj;
 }
 
+function librarySearchPaths(proj) {
+    var configs = nonComments(proj.pbxXCBuildConfigurationSection()),
+        allPaths = [],
+        ids = Object.keys(configs), i, buildSettings;
+
+    for (i = 0; i< ids.length; i++) {
+        buildSettings = configs[ids[i]].buildSettings;
+
+        if (buildSettings['LIBRARY_SEARCH_PATHS']) {
+            allPaths.push(buildSettings['LIBRARY_SEARCH_PATHS']);
+        }
+    }
+
+    return allPaths;
+}
+
 exports.setUp = function (callback) {
     proj.hash = cleanHash();
     callback();
@@ -134,35 +150,52 @@ exports.addStaticLibrary = {
     },
     'should ensure LIBRARY_SEARCH_PATHS inherits defaults correctly': function (test) {
         var newFile = proj.addStaticLibrary('libGoogleAnalytics.a'),
-            configs = nonComments(proj.pbxXCBuildConfigurationSection()),
-            ids = Object.keys(configs), i, current, buildSettings;
+            libraryPaths = librarySearchPaths(proj),
+            expectedPath = '"\\"$(SRCROOT)/KitchenSinktablet\\""',
+            i, current;
 
-        for (i = 0; i< ids.length; i++) {
-            buildSettings = configs[ids[i]].buildSettings;
-
-            if (buildSettings['PRODUCT_NAME'] == '"KitchenSinktablet"') {
-                current = buildSettings['LIBRARY_SEARCH_PATHS'];
-
-                test.ok(current.indexOf('"$(inherited)"') >= 0)
-            }
+        for (i = 0; i < libraryPaths.length; i++) {
+            current = libraryPaths[i];
+            test.ok(current.indexOf('"$(inherited)"') >= 0);
         }
 
         test.done();
     },
     'should ensure the new library is in LIBRARY_SEARCH_PATHS': function (test) {
         var newFile = proj.addStaticLibrary('libGoogleAnalytics.a'),
-            configs = nonComments(proj.pbxXCBuildConfigurationSection()),
+            libraryPaths = librarySearchPaths(proj),
             expectedPath = '"\\"$(SRCROOT)/KitchenSinktablet\\""',
-            ids = Object.keys(configs), i, current, buildSettings;
+            i, current;
 
-        for (i = 0; i< ids.length; i++) {
-            buildSettings = configs[ids[i]].buildSettings;
+        for (i = 0; i < libraryPaths.length; i++) {
+            current = libraryPaths[i];
+            test.ok(current.indexOf(expectedPath) >= 0);
+        }
 
-            if (buildSettings['PRODUCT_NAME'] == '"KitchenSinktablet"') {
-                current = buildSettings['LIBRARY_SEARCH_PATHS'];
+        test.done();
+    },
+    'should add to the Plugins group, optionally': function (test) {
+        var newFile = proj.addStaticLibrary('libGoogleAnalytics.a',
+                                        { plugin: true }),
+            plugins = proj.pbxGroupByName('Plugins');
 
-                test.ok(current.indexOf(expectedPath) >= 0)
-            }
+        test.equal(plugins.children.length, 1);
+        test.done();
+    },
+    'should add the right LIBRARY_SEARCH_PATHS entry for plugins': function (test) {
+        plugins = proj.pbxGroupByName('Plugins');
+        plugins.path = '"Test200/Plugins"';
+
+        var newFile = proj.addStaticLibrary('libGoogleAnalytics.a',
+                                        { plugin: true }),
+            libraryPaths = librarySearchPaths(proj),
+            expectedPath = '"\\"$(SRCROOT)/Test200/Plugins\\""',
+            i, current;
+
+        for (i = 0; i < libraryPaths.length; i++) {
+            current = libraryPaths[i];
+            test.ok(current.indexOf(expectedPath) >= 0,
+                   expectedPath + ' not found in ' + current);
         }
 
         test.done();
