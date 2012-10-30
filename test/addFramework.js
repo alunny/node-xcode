@@ -52,8 +52,8 @@ exports.addFramework = {
 
         test.equal(fileRefEntry.isa, 'PBXFileReference');
         test.equal(fileRefEntry.lastKnownFileType, '"compiled.mach-o.dylib"');
-        test.equal(fileRefEntry.name, 'libsqlite3.dylib');
-        test.equal(fileRefEntry.path, 'usr/lib/libsqlite3.dylib');
+        test.equal(fileRefEntry.name, '"libsqlite3.dylib"');
+        test.equal(fileRefEntry.path, '"usr/lib/libsqlite3.dylib"');
         test.equal(fileRefEntry.sourceTree, 'SDKROOT');
 
         test.done();
@@ -85,7 +85,20 @@ exports.addFramework = {
         test.equal(buildFileEntry.isa, 'PBXBuildFile');
         test.equal(buildFileEntry.fileRef, newFile.fileRef);
         test.equal(buildFileEntry.fileRef_comment, 'libsqlite3.dylib');
+        test.equal(buildFileEntry.settings, undefined);
 
+        test.done();
+    },
+    'should add the PBXBuildFile object correctly /w weak linked frameworks': function (test) {
+        var newFile = proj.addFramework('libsqlite3.dylib', { weak: true }),
+            buildFileSection = proj.pbxBuildFileSection(),
+            buildFileEntry = buildFileSection[newFile.uuid];
+
+        test.equal(buildFileEntry.isa, 'PBXBuildFile');
+        test.equal(buildFileEntry.fileRef, newFile.fileRef);
+        test.equal(buildFileEntry.fileRef_comment, 'libsqlite3.dylib');
+        test.deepEqual(buildFileEntry.settings, { ATTRIBUTES: [ 'Weak' ] });
+        
         test.done();
     },
     'should add to the Frameworks PBXGroup': function (test) {
