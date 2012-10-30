@@ -165,3 +165,31 @@ exports['path'] = {
         test.done();
     }
 }
+
+exports['settings'] = {
+   'should not be defined by default': function (test) {
+      var sourceFile = new pbxFile('social.framework');
+
+      test.equal(undefined, sourceFile.settings);
+      test.done();
+    },
+  
+    'should be undefined if weak is false or non-boolean': function (test) {
+        var sourceFile1 = new pbxFile('social.framework',
+            { weak: false });
+        var sourceFile2 = new pbxFile('social.framework',
+            { weak: 'bad_value' });
+
+        test.equal(undefined, sourceFile1.settings);
+        test.equal(undefined, sourceFile2.settings);
+        test.done();
+    },
+
+    'should be {ATTRIBUTES:["Weak"]} if weak linking specified': function (test) {
+        var sourceFile = new pbxFile('social.framework',
+            { weak: true });
+
+        test.deepEqual({ATTRIBUTES:["Weak"]}, sourceFile.settings);
+        test.done();
+    }
+}
