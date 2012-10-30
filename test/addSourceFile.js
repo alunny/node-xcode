@@ -89,8 +89,8 @@ exports.addSourceFile = {
         test.equal(fileRefEntry.isa, 'PBXFileReference');
         test.equal(fileRefEntry.fileEncoding, 4);
         test.equal(fileRefEntry.lastKnownFileType, 'sourcecode.c.objc');
-        test.equal(fileRefEntry.name, 'file.m');
-        test.equal(fileRefEntry.path, 'file.m');
+        test.equal(fileRefEntry.name, '"file.m"');
+        test.equal(fileRefEntry.path, '"file.m"');
         test.equal(fileRefEntry.sourceTree, '"<group>"');
 
         test.done();

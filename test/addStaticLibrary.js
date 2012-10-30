@@ -123,8 +123,8 @@ exports.addStaticLibrary = {
 
         test.equal(fileRefEntry.isa, 'PBXFileReference');
         test.equal(fileRefEntry.lastKnownFileType, 'archive.ar');
-        test.equal(fileRefEntry.name, 'libGoogleAnalytics.a');
-        test.equal(fileRefEntry.path, 'libGoogleAnalytics.a');
+        test.equal(fileRefEntry.name, '"libGoogleAnalytics.a"');
+        test.equal(fileRefEntry.path, '"libGoogleAnalytics.a"');
         test.equal(fileRefEntry.sourceTree, '"<group>"');
 
         test.done();
