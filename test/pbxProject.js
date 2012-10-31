@@ -164,3 +164,22 @@ exports['productName field'] = {
         test.done();
     }
 }
+
+exports['hasFile'] = {
+    'should return true if the file is in the project': function (test) {
+        var newProj = new pbx('.');
+        newProj.hash = jsonProject;
+
+        //  sourceTree: '"<group>"'
+        test.ok(newProj.hasFile('AppDelegate.m'))
+        test.done()
+    },
+    'should return false if the file is not in the project': function (test) {
+        var newProj = new pbx('.');
+        newProj.hash = jsonProject;
+
+        //  sourceTree: '"<group>"'
+        test.ok(!newProj.hasFile('NotTheAppDelegate.m'))
+        test.done()
+    }
+}
