@@ -210,6 +210,40 @@ exports.addResourceFile = {
             test.done();
         }
     },
+    'duplicate entries': {
+        'should return false': function (test) {
+            var newFile = proj.addResourceFile('Plugins/assets.bundle'); 
+
+            test.ok(!proj.addResourceFile('Plugins/assets.bundle'));
+            test.done();
+        },
+        'should return false (plugin entries)': function (test) {
+            var newFile = proj.addResourceFile('Plugins/assets.bundle',
+                                                { plugin: true }); 
+
+            test.ok(!proj.addResourceFile('Plugins/assets.bundle',
+                                                { plugin: true }));
+            test.done();
+        },
+        'should not add another entry anywhere': function (test) {
+            var newFile = proj.addResourceFile('Plugins/assets.bundle'),
+                buildFileSection = proj.pbxBuildFileSection(),
+                bfsLength = Object.keys(buildFileSection).length,
+                fileRefSection = proj.pbxFileReferenceSection(),
+                frsLength = Object.keys(fileRefSection).length,
+                resources = proj.pbxGroupByName('Resources'),
+                sources = proj.pbxResourcesBuildPhaseObj();
+
+            proj.addResourceFile('Plugins/assets.bundle');
+
+            // check lengths
+            test.equal(60, bfsLength);
+            test.equal(68, frsLength);
+            test.equal(resources.children.length, 10);
+            test.equal(sources.files.length, 13);
+            test.done();
+        }
+    },
     tearDown: function (callback) {
         delete proj.pbxGroupByName('Resources').path;
         callback();

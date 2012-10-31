@@ -126,6 +126,32 @@ exports.addSourceFile = {
         test.equal(sourceObj.comment, 'file.m in Sources');
         test.equal(sourceObj.value, newFile.uuid);
         test.done();
+    },
+    'duplicate entries': {
+        'should return false': function (test) {
+            var newFile = proj.addSourceFile('Plugins/file.m'); 
+
+            test.ok(!proj.addSourceFile('Plugins/file.m'));
+            test.done();
+        },
+        'should not add another entry anywhere': function (test) {
+            var newFile = proj.addSourceFile('Plugins/file.m'),
+                buildFileSection = proj.pbxBuildFileSection(),
+                bfsLength = Object.keys(buildFileSection).length,
+                fileRefSection = proj.pbxFileReferenceSection(),
+                frsLength = Object.keys(fileRefSection).length,
+                plugins = proj.pbxGroupByName('Plugins'),
+                sources = proj.pbxSourcesBuildPhaseObj();
+
+            // duplicate!
+            proj.addSourceFile('Plugins/file.m');
+
+            test.equal(60, bfsLength);              // BuildFileSection
+            test.equal(68, frsLength);              // FileReferenceSection
+            test.equal(plugins.children.length, 1); // Plugins pbxGroup
+            test.equal(sources.files.length, 3);    // SourcesBuildPhhase
+            test.done();
+        }
     }
 }
 

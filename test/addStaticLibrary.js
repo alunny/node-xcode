@@ -231,5 +231,21 @@ exports.addStaticLibrary = {
 
             test.done();
         }
+    },
+    'duplicate entries': {
+        'should return false': function (test) {
+            var newFile = proj.addStaticLibrary('libGoogleAnalytics.a'); 
+
+            test.ok(!proj.addStaticLibrary('libGoogleAnalytics.a'));
+            test.done();
+        },
+        'should return false (plugin entries)': function (test) {
+            var newFile = proj.addStaticLibrary('Plugins/libGoogleAnalytics.a',
+                                                { plugin: true }); 
+
+            test.ok(!proj.addStaticLibrary('Plugins/libGoogleAnalytics.a',
+                                                { plugin: true }));
+            test.done();
+        },
     }
 }

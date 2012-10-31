@@ -74,5 +74,25 @@ exports.addHeaderFile = {
         test.equal(pluginObj.comment, 'file.h');
         test.equal(pluginObj.value, newFile.fileRef);
         test.done();
+    },
+    'duplicate entries': {
+        'should return false': function (test) {
+            var newFile = proj.addHeaderFile('Plugins/file.h'); 
+
+            test.ok(!proj.addHeaderFile('Plugins/file.h'));
+            test.done();
+        },
+        'should not add another entry anywhere': function (test) {
+            var newFile = proj.addHeaderFile('Plugins/file.h'),
+                fileRefSection = proj.pbxFileReferenceSection(),
+                frsLength = Object.keys(fileRefSection).length,
+                plugins = proj.pbxGroupByName('Plugins');
+
+            proj.addHeaderFile('Plugins/file.h');
+
+            test.equal(68, frsLength);
+            test.equal(plugins.children.length, 1);
+            test.done();
+        }
     }
 }

@@ -133,5 +133,13 @@ exports.addFramework = {
         test.equal(framework.comment, 'libsqlite3.dylib in Frameworks');
         test.equal(framework.value, newFile.uuid);
         test.done();
+    },
+    'duplicate entries': {
+        'should return false': function (test) {
+            var newFile = proj.addFramework('libsqlite3.dylib');
+
+            test.ok(!proj.addFramework('libsqlite3.dylib'));
+            test.done();
+        }
     }
 }
