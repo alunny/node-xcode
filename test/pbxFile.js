@@ -191,5 +191,13 @@ exports['settings'] = {
 
         test.deepEqual({ATTRIBUTES:["Weak"]}, sourceFile.settings);
         test.done();
+    },
+
+    'should be {COMPILER_FLAGS:"blah"} if compiler flags specified': function (test) {
+        var sourceFile = new pbxFile('Plugins/BarcodeScanner.m',
+            { compilerFlags: "-fno-objc-arc" });
+
+        test.deepEqual({COMPILER_FLAGS:"-fno-objc-arc"}, sourceFile.settings);
+        test.done();
     }
 }
