@@ -13,9 +13,39 @@ exports.setUp = function (callback) {
     callback();
 }
 
+function nonComments(obj) {
+    var keys = Object.keys(obj),
+        newObj = {}, i = 0;
+
+    for (i; i < keys.length; i++) {
+        if (!/_comment$/.test(keys[i])) {
+            newObj[keys[i]] = obj[keys[i]];
+        }
+    }
+
+    return newObj;
+}
+
+function frameworkSearchPaths(proj) {
+    var configs = nonComments(proj.pbxXCBuildConfigurationSection()),
+        allPaths = [],
+        ids = Object.keys(configs), i, buildSettings;
+
+    for (i = 0; i< ids.length; i++) {
+        buildSettings = configs[ids[i]].buildSettings;
+
+        if (buildSettings['FRAMEWORK_SEARCH_PATHS']) {
+            allPaths.push(buildSettings['FRAMEWORK_SEARCH_PATHS']);
+        }
+    }
+
+    return allPaths;
+}
+
 exports.addFramework = {
     'should return a pbxFile': function (test) {
         var newFile = proj.addFramework('libsqlite3.dylib');
+        console.log(newFile);
 
         test.equal(newFile.constructor, pbxFile);
         test.done()
@@ -141,5 +171,29 @@ exports.addFramework = {
             test.ok(!proj.addFramework('libsqlite3.dylib'));
             test.done();
         }
+    },
+    'should pbxFile correctly for custom frameworks': function (test) {
+        var newFile = proj.addFramework('/path/to/Custom.framework', {customFramework: true});
+
+        test.ok(newFile.customFramework);
+        test.ok(!newFile.fileEncoding);
+        test.equal(newFile.sourceTree, '"<group>"');
+        test.equal(newFile.group, 'Frameworks');
+        test.equal(newFile.basename, 'Custom.framework');
+        test.equal(newFile.dirname, '/path/to');
+        // XXX framework has to be copied over to PROJECT root. That is what XCode does when you drag&drop
+        test.equal(newFile.path, 'Custom.framework');
+
+
+        // should add path to framework search path
+        var frameworkPaths = frameworkSearchPaths(proj);
+            expectedPath = '"/path/to"';
+
+        for (i = 0; i < frameworkPaths.length; i++) {
+            var current = frameworkPaths[i];
+            test.ok(current.indexOf('"$(inherited)"') >= 0);
+            test.ok(current.indexOf(expectedPath) >= 0);
+        }
+        test.done();
     }
 }

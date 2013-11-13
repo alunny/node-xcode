@@ -13,6 +13,35 @@ exports.setUp = function (callback) {
     callback();
 }
 
+function nonComments(obj) {
+    var keys = Object.keys(obj),
+        newObj = {}, i = 0;
+
+    for (i; i < keys.length; i++) {
+        if (!/_comment$/.test(keys[i])) {
+            newObj[keys[i]] = obj[keys[i]];
+        }
+    }
+
+    return newObj;
+}
+
+function frameworkSearchPaths(proj) {
+    var configs = nonComments(proj.pbxXCBuildConfigurationSection()),
+        allPaths = [],
+        ids = Object.keys(configs), i, buildSettings;
+
+    for (i = 0; i< ids.length; i++) {
+        buildSettings = configs[ids[i]].buildSettings;
+
+        if (buildSettings['FRAMEWORK_SEARCH_PATHS']) {
+            allPaths.push(buildSettings['FRAMEWORK_SEARCH_PATHS']);
+        }
+    }
+
+    return allPaths;
+}
+
 exports.removeFramework = {
     'should return a pbxFile': function (test) {
         var newFile = proj.addFramework('libsqlite3.dylib');
@@ -97,6 +126,28 @@ exports.removeFramework = {
             frameworks = proj.pbxFrameworksBuildPhaseObj();
 
         test.equal(frameworks.files.length, 15);
+        
+        test.done();
+    },
+    'should remove custom frameworks': function (test) {
+        var newFile = proj.addFramework('/path/to/Custom.framework'),
+            frameworks = proj.pbxFrameworksBuildPhaseObj();
+
+        test.equal(frameworks.files.length, 16);
+        
+        var deletedFile = proj.removeFramework('/path/to/Custom.framework'),
+            frameworks = proj.pbxFrameworksBuildPhaseObj();
+
+        test.equal(frameworks.files.length, 15);
+        
+        var frameworkPaths = frameworkSearchPaths(proj);
+            expectedPath = '"/path/to"';
+
+        for (i = 0; i < frameworkPaths.length; i++) {
+            var current = frameworkPaths[i];
+            test.ok(current.indexOf('"$(inherited)"') == -1);
+            test.ok(current.indexOf(expectedPath) == -1);
+        }
         
         test.done();
     }
