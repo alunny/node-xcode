@@ -2,7 +2,7 @@
   "author": "Andrew Lunny <alunny@gmail.com>",
   "name": "xcode",
   "description": "parser for xcodeproj/project.pbxproj files",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "main":"index.js",
   "repository": {
     "url": "https://github.com/alunny/node-xcode.git"
