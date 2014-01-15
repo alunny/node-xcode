@@ -187,8 +187,8 @@ exports.addFramework = {
 
         // should add path to framework search path
         var frameworkPaths = frameworkSearchPaths(proj);
-            expectedPath = '"/path/to"';
-
+            expectedPath = '"\\"/path/to\\""';
+        
         for (i = 0; i < frameworkPaths.length; i++) {
             var current = frameworkPaths[i];
             test.ok(current.indexOf('"$(inherited)"') >= 0);
