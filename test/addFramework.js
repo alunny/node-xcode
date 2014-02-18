@@ -182,13 +182,13 @@ exports.addFramework = {
         test.equal(newFile.basename, 'Custom.framework');
         test.equal(newFile.dirname, '/path/to');
         // XXX framework has to be copied over to PROJECT root. That is what XCode does when you drag&drop
-        test.equal(newFile.path, 'Custom.framework');
+        test.equal(newFile.path, '/path/to/Custom.framework');
 
 
         // should add path to framework search path
         var frameworkPaths = frameworkSearchPaths(proj);
-            expectedPath = '"/path/to"';
-
+            expectedPath = '"\\"/path/to\\""';
+        
         for (i = 0; i < frameworkPaths.length; i++) {
             var current = frameworkPaths[i];
             test.ok(current.indexOf('"$(inherited)"') >= 0);
