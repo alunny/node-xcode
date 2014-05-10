@@ -183,3 +183,17 @@ exports['hasFile'] = {
         test.done()
     }
 }
+
+exports['addPluginFile function'] = {
+    'should add files to the .pbxproj file using the Mac path seperator on Windows': function (test) {
+        var myProj = new pbx('test/parser/projects/add-files.pbxproj');
+
+        myProj.parse(function (err, hash) {
+            myProj.addPluginFile('myPlugin\\newFile.m');
+
+            var newContents = myProj.writeSync();
+            test.ok(newContents.match(/path\s*=\s*"?myPlugin\/newFile\.m"?;/));
+            test.done();
+        });
+    }
+}
