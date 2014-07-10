@@ -155,6 +155,25 @@ exports['updateProductName function'] = {
     }
 }
 
+exports['updateBuildProperty function'] = {
+    setUp:function(callback) {
+        callback();
+    },
+    tearDown:function(callback) {
+        fs.writeFileSync(bcpbx, original_pbx, 'utf-8');
+        callback();
+    },
+    'should change build properties in the .pbxproj file': function (test) {
+        var myProj = new pbx('test/parser/projects/build-config.pbxproj');
+        myProj.parse(function(err, hash) {
+            myProj.updateBuildProperty('TARGETED_DEVICE_FAMILY', '"arm"');
+            var newContents = myProj.writeSync();
+            test.ok(newContents.match(/TARGETED_DEVICE_FAMILY\s*=\s*"arm"/));
+            test.done();
+        });
+    }
+}
+
 exports['productName field'] = {
     'should return the product name': function (test) {
         var newProj = new pbx('.');
