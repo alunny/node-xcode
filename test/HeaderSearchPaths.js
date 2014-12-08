@@ -28,6 +28,17 @@ exports.addAndRemoveToFromHeaderSearchPaths = {
         }
         test.done();
     },
+    'add should not mangle string arguments and add to each config section':function(test) {
+        var includePath = '../../some/path';
+        proj.addToHeaderSearchPaths(includePath);
+        var config = proj.pbxXCBuildConfigurationSection();
+        for (var ref in config) {
+            if (ref.indexOf('_comment') > -1 || config[ref].buildSettings.PRODUCT_NAME != PRODUCT_NAME) continue;
+            var lib = config[ref].buildSettings.HEADER_SEARCH_PATHS;
+            test.ok(lib[1].indexOf(includePath) > -1);
+        }
+        test.done();
+    },
     'remove should remove from the path to each configuration section':function(test) {
         var libPath = 'some/path/include';
         proj.addToHeaderSearchPaths({
