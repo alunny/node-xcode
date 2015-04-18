@@ -126,6 +126,21 @@ exports.removeSourceFile = {
 
         test.ok(!sourceObj);
         test.done();
+    },
+    'should remove file from PBXFileReference after modified by Xcode': function(test) {
+        var fileRef = proj.addSourceFile('Plugins/file.m').fileRef;
+
+        // Simulate Xcode's behaviour of stripping quotes around path and name
+        // properties.
+        var entry = proj.pbxFileReferenceSection()[fileRef];
+        entry.name = entry.name.replace(/^"(.*)"$/, "$1");
+        entry.path = entry.path.replace(/^"(.*)"$/, "$1");
+
+        var newFile = proj.removeSourceFile('Plugins/file.m');
+
+        test.ok(newFile.uuid);
+        test.ok(!proj.pbxFileReferenceSection()[fileRef]);
+        test.done();
     }
 }
 
