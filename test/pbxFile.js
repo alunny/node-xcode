@@ -195,9 +195,9 @@ exports['settings'] = {
 
     'should be {COMPILER_FLAGS:"blah"} if compiler flags specified': function (test) {
         var sourceFile = new pbxFile('Plugins/BarcodeScanner.m',
-            { compilerFlags: "-fno-objc-arc" });
+            { compilerFlags: "-std=c++11 -fno-objc-arc" });
 
-        test.deepEqual({COMPILER_FLAGS:"-fno-objc-arc"}, sourceFile.settings);
+        test.deepEqual({COMPILER_FLAGS:'"-std=c++11 -fno-objc-arc"'}, sourceFile.settings);
         test.done();
     }
 }
