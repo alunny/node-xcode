@@ -187,6 +187,28 @@ exports['productName field'] = {
     }
 }
 
+exports['addPluginFile function'] = {
+    'should strip the Plugin path prefix': function (test) {
+        var myProj = new pbx('test/parser/projects/full.pbxproj');
+
+        myProj.parse(function (err, hash) {
+            test.equal(myProj.addPluginFile('Plugins/testMac.m').path, 'testMac.m');
+            test.equal(myProj.addPluginFile('Plugins\\testWin.m').path, 'testWin.m');
+            test.done();
+        });
+    },
+    'should add files to the .pbxproj file using the / path seperator': function (test) {
+        var myProj = new pbx('test/parser/projects/full.pbxproj');
+
+        myProj.parse(function (err, hash) {
+            var file = myProj.addPluginFile('myPlugin\\newFile.m');
+
+            test.equal(myProj.pbxFileReferenceSection()[file.fileRef].path, '"myPlugin/newFile.m"');
+            test.done();
+        });
+    }
+}
+
 exports['hasFile'] = {
     'should return true if the file is in the project': function (test) {
         var newProj = new pbx('.');
