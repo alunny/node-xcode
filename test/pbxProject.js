@@ -169,6 +169,9 @@ exports['updateBuildProperty function'] = {
             myProj.updateBuildProperty('TARGETED_DEVICE_FAMILY', '"arm"');
             var newContents = myProj.writeSync();
             test.ok(newContents.match(/TARGETED_DEVICE_FAMILY\s*=\s*"arm"/));
+            myProj.updateBuildProperty('OTHER_LDFLAGS', ['T','E','S','T']);
+            newContents = myProj.writeSync();
+            test.ok(newContents.match(/OTHER_LDFLAGS\s*=\s*\(\s*T,\s*E,\s*S,\s*T,\s*\)/))
             test.done();
         });
     }
