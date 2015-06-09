@@ -2,10 +2,15 @@ var pbx = require('../lib/pbxProject'),
     fs = require('fs'),
     myProj;
 
-function testProjectContents(filename, test) {
-    var myProj = new pbx(filename),
-        content = fs.readFileSync(filename, 'utf-8');
+function testProjectContents(filename, test, expectedFilename) {
+    var myProj = new pbx(filename);
 
+    var content;
+    if (expectedFilename) {
+        content = fs.readFileSync(expectedFilename, 'utf-8');
+    } else {
+        content = fs.readFileSync(filename, 'utf-8');
+    }
     // normalize tabs vs strings
     content = content.replace(/    /g, '\t');
 
@@ -46,7 +51,10 @@ exports.writeSync = {
         testProjectContents('test/parser/projects/hash.pbxproj', test);
     },
     'should write out the "with_array" test': function (test) {
-        testProjectContents('test/parser/projects/with_array.pbxproj', test);
+        // Special case in that the originating project does not have a trailing comma for all of its array entries.
+        // This is definitely possibly.
+        // But when we write/read it out again during testing, the trailing commas are introduced by our library.
+        testProjectContents('test/parser/projects/with_array.pbxproj', test, 'test/parser/projects/expected/with_array_expected.pbxproj');
     },
     'should write out the "section" test': function (test) {
         testProjectContents('test/parser/projects/section.pbxproj', test);
