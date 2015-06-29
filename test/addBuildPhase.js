@@ -26,7 +26,7 @@ exports.addBuildPhase = {
         test.done()
     },
     'should add all files to build phase': function (test) {
-        var buildPhase = proj.addBuildPhase(['file.m', 'assets.bundle'], 'PBXResourcesBuildPhase', 'My build phase');
+        var buildPhase = proj.addBuildPhase(['file.m', 'assets.bundle'], 'PBXResourcesBuildPhase', 'My build phase').buildPhase;
         for (var index = 0; index < buildPhase.files.length; index++) {
             var file = buildPhase.files[index];
             test.ok(file.value);
@@ -35,7 +35,7 @@ exports.addBuildPhase = {
         test.done()
     },
     'should add the PBXBuildPhase object correctly': function (test) {
-        var buildPhase = proj.addBuildPhase(['file.m', 'assets.bundle'], 'PBXResourcesBuildPhase', 'My build phase'),
+        var buildPhase = proj.addBuildPhase(['file.m', 'assets.bundle'], 'PBXResourcesBuildPhase', 'My build phase').buildPhase,
             buildPhaseInPbx = proj.buildPhaseObject('PBXResourcesBuildPhase', 'My build phase');
 
         test.equal(buildPhaseInPbx, buildPhase);
@@ -45,7 +45,7 @@ exports.addBuildPhase = {
         test.done();
     },
     'should add each of the files to PBXBuildFile section': function (test) {
-        var buildPhase = proj.addBuildPhase(['file.m', 'assets.bundle'], 'PBXResourcesBuildPhase', 'My build phase'),
+        var buildPhase = proj.addBuildPhase(['file.m', 'assets.bundle'], 'PBXResourcesBuildPhase', 'My build phase').buildPhase,
             buildFileSection = proj.pbxBuildFileSection();
         
         for (var index = 0; index < buildPhase.files.length; index++) {
@@ -56,7 +56,7 @@ exports.addBuildPhase = {
         test.done();
     },
     'should add each of the files to PBXFileReference section': function (test) {
-        var buildPhase = proj.addBuildPhase(['file.m', 'assets.bundle'], 'PBXResourcesBuildPhase', 'My build phase'),
+        var buildPhase = proj.addBuildPhase(['file.m', 'assets.bundle'], 'PBXResourcesBuildPhase', 'My build phase').buildPhase,
             fileRefSection = proj.pbxFileReferenceSection(),
             buildFileSection = proj.pbxBuildFileSection(),
             fileRefs = [];
