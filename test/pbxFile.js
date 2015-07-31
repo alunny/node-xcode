@@ -43,6 +43,13 @@ exports['lastType'] = {
         test.done();
     },
 
+    'should detect that a .framework/.a path means archive.ar': function (test) {
+        var sourceFile = new pbxFile('MessageUI.framework/libGoogleAnalytics.a');
+
+        test.equal('archive.ar', sourceFile.lastType);
+        test.done();
+    },
+    
     'should detect that a .a path means archive.ar': function (test) {
         var sourceFile = new pbxFile('libGoogleAnalytics.a');
 
