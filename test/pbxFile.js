@@ -1,67 +1,67 @@
 var pbxFile = require('../lib/pbxFile');
 
-exports['lastType'] = {
+exports['lastKnownFileType'] = {
     'should detect that a .m path means sourcecode.c.objc': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m');
 
-        test.equal('sourcecode.c.objc', sourceFile.lastType);
+        test.equal('sourcecode.c.objc', sourceFile.lastKnownFileType);
         test.done();
     },
 
     'should detect that a .h path means sourceFile.c.h': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.h');
 
-        test.equal('sourcecode.c.h', sourceFile.lastType);
+        test.equal('sourcecode.c.h', sourceFile.lastKnownFileType);
         test.done();
     },
 
     'should detect that a .bundle path means "wrapper.plug-in"': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.bundle');
 
-        test.equal('"wrapper.plug-in"', sourceFile.lastType);
+        test.equal('wrapper.plug-in', sourceFile.lastKnownFileType);
         test.done();
     },
 
     'should detect that a .xib path means file.xib': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.xib');
 
-        test.equal('file.xib', sourceFile.lastType);
+        test.equal('file.xib', sourceFile.lastKnownFileType);
         test.done();
     },
 
     'should detect that a .dylib path means "compiled.mach-o.dylib"': function (test) {
         var sourceFile = new pbxFile('libsqlite3.dylib');
 
-        test.equal('"compiled.mach-o.dylib"', sourceFile.lastType);
+        test.equal('compiled.mach-o.dylib', sourceFile.lastKnownFileType);
         test.done();
     },
 
     'should detect that a .framework path means wrapper.framework': function (test) {
         var sourceFile = new pbxFile('MessageUI.framework');
 
-        test.equal('wrapper.framework', sourceFile.lastType);
+        test.equal('wrapper.framework', sourceFile.lastKnownFileType);
         test.done();
     },
 
     'should detect that a .a path means archive.ar': function (test) {
         var sourceFile = new pbxFile('libGoogleAnalytics.a');
 
-        test.equal('archive.ar', sourceFile.lastType);
+        test.equal('archive.ar', sourceFile.lastKnownFileType);
         test.done();
     },
 
-    'should allow lastType to be overridden': function (test) {
+    'should allow lastKnownFileType to be overridden': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m',
-                { lastType: 'somestupidtype' });
+                { lastKnownFileType: 'somestupidtype' });
 
-        test.equal('somestupidtype', sourceFile.lastType);
+        test.equal('somestupidtype', sourceFile.lastKnownFileType);
         test.done();
     },
 
-    'should set lastType to unknown if undetectable': function (test) {
+    'should set lastKnownFileType to unknown if undetectable': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.guh');
 
-        test.equal('unknown', sourceFile.lastType);
+        test.equal('unknown', sourceFile.lastKnownFileType);
         test.done();
     }
 }
