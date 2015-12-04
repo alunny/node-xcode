@@ -81,7 +81,7 @@ exports.addFramework = {
             fileRefEntry = fileRefSection[newFile.fileRef];
 
         test.equal(fileRefEntry.isa, 'PBXFileReference');
-        test.equal(fileRefEntry.lastKnownFileType, '"compiled.mach-o.dylib"');
+        test.equal(fileRefEntry.lastKnownFileType, 'compiled.mach-o.dylib');
         test.equal(fileRefEntry.name, '"libsqlite3.dylib"');
         test.equal(fileRefEntry.path, '"usr/lib/libsqlite3.dylib"');
         test.equal(fileRefEntry.sourceTree, 'SDKROOT');

@@ -40,7 +40,7 @@ exports.addTargetDependency = {
         test.done();
     },
     'should add targetDependencies to target': function (test) {
-        var targetInPbxProj = proj.pbxNativeTarget()['1D6058900D05DD3D006BFB55'];
+        var targetInPbxProj = proj.pbxNativeTargetSection()['1D6058900D05DD3D006BFB55'];
         test.deepEqual(targetInPbxProj.dependencies, []);
         
         var target = proj.addTargetDependency('1D6058900D05DD3D006BFB55', ['1D6058900D05DD3D006BFB54', '1D6058900D05DD3D006BFB55']).target;
