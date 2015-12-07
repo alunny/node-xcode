@@ -151,6 +151,7 @@ exports.dataModelDocument = {
         test.equal(xcVersionGroupEntry.isa, 'XCVersionGroup');
         test.equal(xcVersionGroupEntry.children[0], newFile.models[0].fileRef);
         test.equal(xcVersionGroupEntry.currentVersion, newFile.currentModel.fileRef);
+        test.equal(xcVersionGroupEntry.name, path.basename(singleDataModelFilePath));
         test.equal(xcVersionGroupEntry.path, singleDataModelFilePath);
         test.equal(xcVersionGroupEntry.sourceTree, '"<group>"');
         test.equal(xcVersionGroupEntry.versionGroupType, 'wrapper.xcdatamodel');
