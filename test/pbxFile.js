@@ -50,6 +50,13 @@ exports['lastKnownFileType'] = {
         test.done();
     },
 
+    'should detect that a .xcdatamodel path means wrapper.xcdatamodel': function (test) {
+        var sourceFile = new pbxFile('dataModel.xcdatamodel');
+
+        test.equal('wrapper.xcdatamodel', sourceFile.lastKnownFileType);
+        test.done();
+    },
+
     'should allow lastKnownFileType to be overridden': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m',
                 { lastKnownFileType: 'somestupidtype' });
@@ -71,6 +78,12 @@ exports['group'] = {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m');
 
         test.equal('Sources', sourceFile.group);
+        test.done();
+    },
+    'should be Sources for data model document files': function (test) {
+        var dataModelFile = new pbxFile('dataModel.xcdatamodeld');
+
+        test.equal('Sources', dataModelFile.group);
         test.done();
     },
     'should be Frameworks for frameworks': function (test) {
