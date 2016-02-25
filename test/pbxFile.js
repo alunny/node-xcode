@@ -186,7 +186,7 @@ exports['settings'] = {
       test.equal(undefined, sourceFile.settings);
       test.done();
     },
-  
+
     'should be undefined if weak is false or non-boolean': function (test) {
         var sourceFile1 = new pbxFile('social.framework',
             { weak: false });
@@ -203,6 +203,22 @@ exports['settings'] = {
             { weak: true });
 
         test.deepEqual({ATTRIBUTES:["Weak"]}, sourceFile.settings);
+        test.done();
+    },
+
+    'should be {ATTRIBUTES:["CodeSignOnCopy"]} if sign specified': function (test) {
+        var sourceFile = new pbxFile('signable.framework',
+            { sign: true });
+
+        test.deepEqual({ATTRIBUTES:["CodeSignOnCopy"]}, sourceFile.settings);
+        test.done();
+    },
+
+    'should be {ATTRIBUTES:["Weak","CodeSignOnCopy"]} if both weak linking and sign specified': function (test) {
+        var sourceFile = new pbxFile('signableWeak.framework',
+            { weak: true, sign: true });
+
+        test.deepEqual({ATTRIBUTES:["Weak", "CodeSignOnCopy"]}, sourceFile.settings);
         test.done();
     },
 

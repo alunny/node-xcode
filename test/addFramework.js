@@ -131,6 +131,18 @@ exports.addFramework = {
 
         test.done();
     },
+    'should add the PBXBuildFile object correctly /w signable frameworks': function (test) {
+        var newFile = proj.addFramework('libsqlite3.dylib', { sign: true }),
+            buildFileSection = proj.pbxBuildFileSection(),
+            buildFileEntry = buildFileSection[newFile.uuid];
+
+        test.equal(buildFileEntry.isa, 'PBXBuildFile');
+        test.equal(buildFileEntry.fileRef, newFile.fileRef);
+        test.equal(buildFileEntry.fileRef_comment, 'libsqlite3.dylib');
+        test.deepEqual(buildFileEntry.settings, { ATTRIBUTES: [ 'CodeSignOnCopy' ] });
+
+        test.done();
+    },
     'should add to the Frameworks PBXGroup': function (test) {
         var newLength = proj.pbxGroupByName('Frameworks').children.length + 1,
             newFile = proj.addFramework('libsqlite3.dylib'),
