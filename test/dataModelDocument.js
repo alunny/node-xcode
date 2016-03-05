@@ -152,7 +152,8 @@ exports.dataModelDocument = {
         test.equal(xcVersionGroupEntry.children[0], newFile.models[0].fileRef);
         test.equal(xcVersionGroupEntry.currentVersion, newFile.currentModel.fileRef);
         test.equal(xcVersionGroupEntry.name, path.basename(singleDataModelFilePath));
-        test.equal(xcVersionGroupEntry.path, singleDataModelFilePath);
+        // Need to validate against normalized path, since paths should contain forward slash on OSX
+        test.equal(xcVersionGroupEntry.path, singleDataModelFilePath.replace(/\\/g, '/'));
         test.equal(xcVersionGroupEntry.sourceTree, '"<group>"');
         test.equal(xcVersionGroupEntry.versionGroupType, 'wrapper.xcdatamodel');
 
