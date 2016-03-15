@@ -50,6 +50,13 @@ exports['lastKnownFileType'] = {
         test.done();
     },
 
+    'should detect that a .xcdatamodel path means wrapper.xcdatamodel': function (test) {
+        var sourceFile = new pbxFile('dataModel.xcdatamodel');
+
+        test.equal('wrapper.xcdatamodel', sourceFile.lastKnownFileType);
+        test.done();
+    },
+
     'should allow lastKnownFileType to be overridden': function (test) {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m',
                 { lastKnownFileType: 'somestupidtype' });
@@ -71,6 +78,12 @@ exports['group'] = {
         var sourceFile = new pbxFile('Plugins/ChildBrowser.m');
 
         test.equal('Sources', sourceFile.group);
+        test.done();
+    },
+    'should be Sources for data model document files': function (test) {
+        var dataModelFile = new pbxFile('dataModel.xcdatamodeld');
+
+        test.equal('Sources', dataModelFile.group);
         test.done();
     },
     'should be Frameworks for frameworks': function (test) {
@@ -173,7 +186,7 @@ exports['settings'] = {
       test.equal(undefined, sourceFile.settings);
       test.done();
     },
-  
+
     'should be undefined if weak is false or non-boolean': function (test) {
         var sourceFile1 = new pbxFile('social.framework',
             { weak: false });
@@ -190,6 +203,22 @@ exports['settings'] = {
             { weak: true });
 
         test.deepEqual({ATTRIBUTES:["Weak"]}, sourceFile.settings);
+        test.done();
+    },
+
+    'should be {ATTRIBUTES:["CodeSignOnCopy"]} if sign specified': function (test) {
+        var sourceFile = new pbxFile('signable.framework',
+            { sign: true });
+
+        test.deepEqual({ATTRIBUTES:["CodeSignOnCopy"]}, sourceFile.settings);
+        test.done();
+    },
+
+    'should be {ATTRIBUTES:["Weak","CodeSignOnCopy"]} if both weak linking and sign specified': function (test) {
+        var sourceFile = new pbxFile('signableWeak.framework',
+            { weak: true, sign: true });
+
+        test.deepEqual({ATTRIBUTES:["Weak", "CodeSignOnCopy"]}, sourceFile.settings);
         test.done();
     },
 

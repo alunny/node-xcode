@@ -12,7 +12,7 @@ exports.setUp = function (callback) {
     callback();
 }
 
-exports.addPbxGroup = {
+exports.addRemovePbxGroup = {
     'should return a pbxGroup': function (test) {
         var pbxGroup = proj.addPbxGroup(['file.m'], 'MyGroup', 'Application', 'Application', '"<group>"');
         
@@ -145,5 +145,16 @@ exports.addPbxGroup = {
         // for each file added in the file reference section two keyes are added - one for the object and one for the comment
         test.equal(initialBuildFileSectionItemsCount.length, afterAdditionBuildFileSectionItemsCount.length - 4);
         test.done();
+    },
+    'should remove a pbxGroup': function (test) {
+        var groupName = 'MyGroup';
+        proj.addPbxGroup(['file.m'], groupName, 'Application', 'Application', '"<group>"');
+        proj.removePbxGroup(groupName);
+        
+        var pbxGroupInPbx = proj.pbxGroupByName(groupName);
+        console.log(pbxGroupInPbx);
+        
+        test.ok(!pbxGroupInPbx);
+        test.done()
     }
 }
