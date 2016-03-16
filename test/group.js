@@ -185,7 +185,7 @@ exports.removeSourceFileFromGroup = {
 }
 
 exports.addHeaderFileToGroup = {
-    'should create group + add source file' : function(test) {
+    'should create group + add header file' : function(test) {
         var testKey = project.pbxCreateGroup('Test', 'Test');
         var file = project.addHeaderFile('Notifications.h', {}, testKey);
 
@@ -197,7 +197,7 @@ exports.addHeaderFileToGroup = {
 }
 
 exports.removeHeaderFileFromGroup = {
-    'should create group + add source file then remove source file' : function(test) {
+    'should create group + add source file then remove header file' : function(test) {
         var testKey = project.pbxCreateGroup('Test', 'Test');
         var file = project.addHeaderFile('Notifications.h', {}, testKey);
 
@@ -205,6 +205,36 @@ exports.removeHeaderFileFromGroup = {
         test.ok(foundInGroup);
 
         project.removeHeaderFile('Notifications.h', {}, testKey);
+
+        var foundInGroup = findChildInGroup(project.getPBXGroupByKey(testKey),file.fileRef );
+        test.ok(!foundInGroup);
+
+        test.done();
+    }
+}
+
+exports.addResourceFileToGroup = {
+    'should add resource file (PNG) to the splash group' : function(test) {
+        
+        var testKey = project.findPBXGroupKey({path:'splash'});
+        var file = project.addResourceFile('DefaultTest-667h.png', {}, testKey);
+
+        var foundInGroup = findChildInGroup(project.getPBXGroupByKey(testKey),file.fileRef );
+        test.ok(foundInGroup);
+
+        test.done();
+    }
+}
+
+exports.removeResourceFileFromGroup = {
+    'should add resource file (PNG) then remove resource file from splash group' : function(test) {
+        var testKey = project.findPBXGroupKey({path:'splash'});
+        var file = project.addResourceFile('DefaultTest-667h.png', {}, testKey);
+
+        var foundInGroup = findChildInGroup(project.getPBXGroupByKey(testKey),file.fileRef );
+        test.ok(foundInGroup);
+
+        project.removeResourceFile('DefaultTest-667h.png', {}, testKey);
 
         var foundInGroup = findChildInGroup(project.getPBXGroupByKey(testKey),file.fileRef );
         test.ok(!foundInGroup);
