@@ -1,4 +1,4 @@
-var fullProject = require('./fixtures/full-project')
+var fullProject = require('./fixtures/full-project'),
     fullProjectStr = JSON.stringify(fullProject),
     pbx = require('../lib/pbxProject'),
     pbxFile = require('../lib/pbxFile'),
@@ -47,22 +47,22 @@ exports.removeFramework = {
         var newFile = proj.addFramework('libsqlite3.dylib');
 
         test.equal(newFile.constructor, pbxFile);
-        
+
         var deletedFile = proj.removeFramework('libsqlite3.dylib');
 
         test.equal(deletedFile.constructor, pbxFile);
-        
+
         test.done()
     },
     'should set a fileRef on the pbxFile': function (test) {
         var newFile = proj.addFramework('libsqlite3.dylib');
 
         test.ok(newFile.fileRef);
-        
+
         var deletedFile = proj.removeFramework('libsqlite3.dylib');
 
         test.ok(deletedFile.fileRef);
-        
+
         test.done()
     },
     'should remove 2 fields from the PBXFileReference section': function (test) {
@@ -80,7 +80,7 @@ exports.removeFramework = {
         test.equal(66, frsLength);
         test.ok(!fileRefSection[deletedFile.fileRef]);
         test.ok(!fileRefSection[deletedFile.fileRef + '_comment']);
-        
+
         test.done();
     },
     'should remove 2 fields from the PBXBuildFile section': function (test) {
@@ -93,13 +93,13 @@ exports.removeFramework = {
         test.ok(buildFileSection[newFile.uuid + '_comment']);
 
         var deletedFile = proj.removeFramework('libsqlite3.dylib');
-        
+
         bfsLength = Object.keys(buildFileSection).length;
 
         test.equal(58, bfsLength);
         test.ok(!buildFileSection[deletedFile.uuid]);
         test.ok(!buildFileSection[deletedFile.uuid + '_comment']);
-        
+
         test.done();
     },
     'should remove from the Frameworks PBXGroup': function (test) {
@@ -108,12 +108,12 @@ exports.removeFramework = {
             frameworks = proj.pbxGroupByName('Frameworks');
 
         test.equal(frameworks.children.length, newLength);
-        
+
         var deletedFile = proj.removeFramework('libsqlite3.dylib'),
         newLength = newLength - 1;
 
         test.equal(frameworks.children.length, newLength);
-        
+
         test.done();
     },
     'should remove from the PBXFrameworksBuildPhase': function (test) {
@@ -121,34 +121,33 @@ exports.removeFramework = {
             frameworks = proj.pbxFrameworksBuildPhaseObj();
 
         test.equal(frameworks.files.length, 16);
-        
+
         var deletedFile = proj.removeFramework('libsqlite3.dylib'),
             frameworks = proj.pbxFrameworksBuildPhaseObj();
 
         test.equal(frameworks.files.length, 15);
-        
+
         test.done();
     },
     'should remove custom frameworks': function (test) {
-        var newFile = proj.addFramework('/path/to/Custom.framework'),
+        var newFile = proj.addFramework('/path/to/Custom.framework', { customFramework: true }),
             frameworks = proj.pbxFrameworksBuildPhaseObj();
 
         test.equal(frameworks.files.length, 16);
-        
-        var deletedFile = proj.removeFramework('/path/to/Custom.framework'),
+
+        var deletedFile = proj.removeFramework('/path/to/Custom.framework', { customFramework: true }),
             frameworks = proj.pbxFrameworksBuildPhaseObj();
 
         test.equal(frameworks.files.length, 15);
-        
+
         var frameworkPaths = frameworkSearchPaths(proj);
             expectedPath = '"/path/to"';
 
         for (i = 0; i < frameworkPaths.length; i++) {
             var current = frameworkPaths[i];
-            test.ok(current.indexOf('"$(inherited)"') == -1);
             test.ok(current.indexOf(expectedPath) == -1);
         }
-        
+
         test.done();
     }
 }
