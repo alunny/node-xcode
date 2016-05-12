@@ -208,7 +208,7 @@ exports['settings'] = {
 
     'should be {ATTRIBUTES:["CodeSignOnCopy"]} if sign specified': function (test) {
         var sourceFile = new pbxFile('signable.framework',
-            { sign: true });
+            { embed: true, sign: true });
 
         test.deepEqual({ATTRIBUTES:["CodeSignOnCopy"]}, sourceFile.settings);
         test.done();
@@ -216,7 +216,7 @@ exports['settings'] = {
 
     'should be {ATTRIBUTES:["Weak","CodeSignOnCopy"]} if both weak linking and sign specified': function (test) {
         var sourceFile = new pbxFile('signableWeak.framework',
-            { weak: true, sign: true });
+            { embed: true, weak: true, sign: true });
 
         test.deepEqual({ATTRIBUTES:["Weak", "CodeSignOnCopy"]}, sourceFile.settings);
         test.done();
