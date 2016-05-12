@@ -45,7 +45,6 @@ function frameworkSearchPaths(proj) {
 exports.addFramework = {
     'should return a pbxFile': function (test) {
         var newFile = proj.addFramework('libsqlite3.dylib');
-        console.log(newFile);
 
         test.equal(newFile.constructor, pbxFile);
         test.done()
@@ -128,18 +127,6 @@ exports.addFramework = {
         test.equal(buildFileEntry.fileRef, newFile.fileRef);
         test.equal(buildFileEntry.fileRef_comment, 'libsqlite3.dylib');
         test.deepEqual(buildFileEntry.settings, { ATTRIBUTES: [ 'Weak' ] });
-
-        test.done();
-    },
-    'should add the PBXBuildFile object correctly /w signable frameworks': function (test) {
-        var newFile = proj.addFramework('libsqlite3.dylib', { sign: true }),
-            buildFileSection = proj.pbxBuildFileSection(),
-            buildFileEntry = buildFileSection[newFile.uuid];
-
-        test.equal(buildFileEntry.isa, 'PBXBuildFile');
-        test.equal(buildFileEntry.fileRef, newFile.fileRef);
-        test.equal(buildFileEntry.fileRef_comment, 'libsqlite3.dylib');
-        test.deepEqual(buildFileEntry.settings, { ATTRIBUTES: [ 'CodeSignOnCopy' ] });
 
         test.done();
     },
@@ -227,6 +214,19 @@ exports.addFramework = {
             frameworks = proj.pbxEmbedFrameworksBuildPhaseObj();
 
         test.equal(frameworks.files.length, 0);
+        test.done();
+    },
+    'should add the PBXBuildFile object correctly /w signable frameworks': function (test) {
+        var newFile = proj.addFramework('/path/to/SomeSignable.framework', { customFramework: true, embed: true, sign: true }),
+            buildFileSection = proj.pbxBuildFileSection(),
+            buildFileEntry = buildFileSection[newFile.uuid];
+
+        test.equal(newFile.group, 'Embed Frameworks');
+        test.equal(buildFileEntry.isa, 'PBXBuildFile');
+        test.equal(buildFileEntry.fileRef, newFile.fileRef);
+        test.equal(buildFileEntry.fileRef_comment, 'SomeSignable.framework');
+        test.deepEqual(buildFileEntry.settings, { ATTRIBUTES: [ 'CodeSignOnCopy' ] });
+
         test.done();
     },
 }
