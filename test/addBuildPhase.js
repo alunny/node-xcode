@@ -106,7 +106,7 @@ exports.addBuildPhase = {
         test.done();
     },
     'should set target to Frameworks given \'frameworks\' as target': function (test) {
-        var buildPhase = proj.addBuildPhase(['file.m'], 'PBXCopyFilesBuildPhase', 'Copy Files', proj.getFirstTarget().uuid,  'frameworks').buildPhase;
+        var buildPhase = proj.addBuildPhase(['file.m'], 'PBXCopyFilesBuildPhase', 'Copy Files', proj.getFirstTarget().uuid, 'frameworks').buildPhase;
         test.equal(buildPhase.dstSubfolderSpec, 10);
         test.done();
     },
