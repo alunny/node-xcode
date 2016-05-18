@@ -206,6 +206,9 @@ exports.addFramework = {
         var newFile = proj.addFramework('/path/to/SomeEmbeddableCustom.framework', {customFramework: true, embed: true}),
             frameworks = proj.pbxEmbedFrameworksBuildPhaseObj();
 
+        var buildPhaseInPbx = proj.pbxEmbedFrameworksBuildPhaseObj();
+        test.equal(buildPhaseInPbx.dstSubfolderSpec, 10);
+
         test.equal(frameworks.files.length, 1);
         test.done();
     },
