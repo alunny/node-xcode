@@ -36,6 +36,13 @@ exports['lastKnownFileType'] = {
         test.done();
     },
 
+    'should detect that a .tbd path means sourcecode.text-based-dylib-definition': function (test) {
+        var sourceFile = new pbxFile('libsqlite3.tbd');
+
+        test.equal('sourcecode.text-based-dylib-definition', sourceFile.lastKnownFileType);
+        test.done();
+    },
+
     'should detect that a .framework path means wrapper.framework': function (test) {
         var sourceFile = new pbxFile('MessageUI.framework');
 
@@ -86,8 +93,20 @@ exports['group'] = {
         test.equal('Sources', dataModelFile.group);
         test.done();
     },
-    'should be Frameworks for frameworks': function (test) {
+    'should be Frameworks for dylibs': function (test) {
         var framework = new pbxFile('libsqlite3.dylib');
+
+        test.equal('Frameworks', framework.group);
+        test.done();
+    },
+    'should be Frameworks for tbds': function (test) {
+        var framework = new pbxFile('libsqlite3.tbd');
+
+        test.equal('Frameworks', framework.group);
+        test.done();
+    },
+    'should be Frameworks for frameworks': function (test) {
+        var framework = new pbxFile('MessageUI.framework');
 
         test.equal('Frameworks', framework.group);
         test.done();
@@ -120,6 +139,13 @@ exports['basename'] = {
 exports['sourceTree'] = {
     'should be SDKROOT for dylibs': function (test) {
         var sourceFile = new pbxFile('libsqlite3.dylib');
+
+        test.equal('SDKROOT', sourceFile.sourceTree);
+        test.done();
+    },
+
+    'should be SDKROOT for tbds': function (test) {
+        var sourceFile = new pbxFile('libsqlite3.tbd');
 
         test.equal('SDKROOT', sourceFile.sourceTree);
         test.done();
@@ -160,6 +186,13 @@ exports['path'] = {
         var sourceFile = new pbxFile('libsqlite3.dylib');
 
         test.equal('usr/lib/libsqlite3.dylib', sourceFile.path);
+        test.done();
+    },
+
+    'should be "usr/lib" for tbds (relative to SDKROOT)': function (test) {
+        var sourceFile = new pbxFile('libsqlite3.tbd');
+
+        test.equal('usr/lib/libsqlite3.tbd', sourceFile.path);
         test.done();
     },
 
