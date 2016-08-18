@@ -20,5 +20,6 @@
   },
   "scripts": {
     "test": "node_modules/.bin/nodeunit test/parser test"
-  }
+  }, 
+  "license": "Apache-2.0"
 }
