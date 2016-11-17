@@ -110,4 +110,11 @@ exports.addBuildPhase = {
         test.equal(buildPhase.dstSubfolderSpec, 10);
         test.done();
     },
+    'should add a script build phase to echo "hello world!"': function(test) {
+        var options = {shellPath: '/bin/sh', shellScript: 'echo "hello world!"'};
+        var buildPhase = proj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'Run a script', proj.getFirstTarget().uuid, options).buildPhase;
+        test.equal(buildPhase.shellPath, '/bin/sh');
+        test.equal(buildPhase.shellScript, '"echo \\"hello world!\\""');
+        test.done();
+    },
 }
