@@ -215,7 +215,7 @@ exports.removeHeaderFileFromGroup = {
 
 exports.addResourceFileToGroup = {
     'should add resource file (PNG) to the splash group' : function(test) {
-        
+
         var testKey = project.findPBXGroupKey({path:'splash'});
         var file = project.addResourceFile('DefaultTest-667h.png', {}, testKey);
 
@@ -311,7 +311,6 @@ exports.validateHasFile = {
 }
 
 exports.testWritingPBXProject = {
-
     'should successfully write to PBXProject TargetAttributes': function(test) {
         var pbxProjectObj = project.getPBXObject('PBXProject');
         var pbxProject;
@@ -345,6 +344,15 @@ exports.testWritingPBXProject = {
 
         var output = project.writeSync();
 
+        test.done();
+    },
+    'should successfully add target attribute to PBXProject TargetAttributes': function(test) {
+        console.log(project.addTargetAttribute);
+        project.addTargetAttribute('ProvisioningStyle', 'Manual');
+
+        var output = project.writeSync();
+        console.log(output);
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g).length, 1);
         test.done();
     }
 }
