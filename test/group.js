@@ -346,13 +346,34 @@ exports.testWritingPBXProject = {
 
         test.done();
     },
-    'should successfully add target attribute to PBXProject TargetAttributes': function(test) {
-        console.log(project.addTargetAttribute);
+    'should add target attribute to PBXProject TargetAttributes': function(test) {
         project.addTargetAttribute('ProvisioningStyle', 'Manual');
-
         var output = project.writeSync();
-        console.log(output);
         test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g).length, 1);
+
+        test.done();
+    },
+    'should change target attribute at PBXProject TargetAttributes': function(test) {
+        project.addTargetAttribute('ProvisioningStyle', 'Manual');
+        var output = project.writeSync();
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g).length, 1);
+
+        project.addTargetAttribute('ProvisioningStyle', 'Automatic');
+        output = project.writeSync();
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g), null);
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Automatic/g).length, 1);
+
+        test.done();
+    },
+    'should remove target attribute from PBXProject TargetAttributes': function(test) {
+        project.addTargetAttribute('ProvisioningStyle', 'Manual');
+        var output = project.writeSync();
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g).length, 1);
+
+        project.removeTargetAttribute('ProvisioningStyle');
+        output = project.writeSync();
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g), null);
+
         test.done();
     }
 }
