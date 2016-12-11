@@ -215,7 +215,7 @@ exports.removeHeaderFileFromGroup = {
 
 exports.addResourceFileToGroup = {
     'should add resource file (PNG) to the splash group' : function(test) {
-        
+
         var testKey = project.findPBXGroupKey({path:'splash'});
         var file = project.addResourceFile('DefaultTest-667h.png', {}, testKey);
 
@@ -311,7 +311,6 @@ exports.validateHasFile = {
 }
 
 exports.testWritingPBXProject = {
-
     'should successfully write to PBXProject TargetAttributes': function(test) {
         var pbxProjectObj = project.getPBXObject('PBXProject');
         var pbxProject;
@@ -344,6 +343,36 @@ exports.testWritingPBXProject = {
         };
 
         var output = project.writeSync();
+
+        test.done();
+    },
+    'should add target attribute to PBXProject TargetAttributes': function(test) {
+        project.addTargetAttribute('ProvisioningStyle', 'Manual');
+        var output = project.writeSync();
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g).length, 1);
+
+        test.done();
+    },
+    'should change target attribute at PBXProject TargetAttributes': function(test) {
+        project.addTargetAttribute('ProvisioningStyle', 'Manual');
+        var output = project.writeSync();
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g).length, 1);
+
+        project.addTargetAttribute('ProvisioningStyle', 'Automatic');
+        output = project.writeSync();
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g), null);
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Automatic/g).length, 1);
+
+        test.done();
+    },
+    'should remove target attribute from PBXProject TargetAttributes': function(test) {
+        project.addTargetAttribute('ProvisioningStyle', 'Manual');
+        var output = project.writeSync();
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g).length, 1);
+
+        project.removeTargetAttribute('ProvisioningStyle');
+        output = project.writeSync();
+        test.equal(output.match(/ProvisioningStyle\s*=\s*Manual/g), null);
 
         test.done();
     }
