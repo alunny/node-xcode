@@ -210,6 +210,22 @@ exports.addResourceFile = {
             test.done();
         }
     },
+    'when added with { variantGroup: true }': {
+
+        'should not add to the PBXResourcesBuildPhase and PBXBuildFile': function (test) {
+            var newFile = proj.addResourceFile('en.lproj/Localization.strings',
+                { variantGroup: true });
+
+            var sources = proj.pbxResourcesBuildPhaseObj();
+            test.equal(sources.files.length, 12);
+
+            var buildFileSection = proj.pbxBuildFileSection();
+            test.ok(buildFileSection[newFile.uuid] === undefined);
+
+            test.done();
+        },
+
+    },
     'duplicate entries': {
         'should return false': function (test) {
             var newFile = proj.addResourceFile('Plugins/assets.bundle'); 
