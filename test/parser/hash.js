@@ -2,7 +2,7 @@ var PEG = require('pegjs'),
     fs = require('fs'),
     pbx = fs.readFileSync('test/parser/projects/hash.pbxproj', 'utf-8'),
     grammar = fs.readFileSync('lib/parser/pbxproj.pegjs', 'utf-8'),
-    parser = PEG.buildParser(grammar),
+    parser = PEG.generate(grammar),
     rawProj = parser.parse(pbx),
     project = rawProj.project;
 
