@@ -1,11 +1,11 @@
 {
-  "author": "Andrew Lunny <alunny@gmail.com>",
+  "author": "Apache Software Foundation",
   "name": "xcode",
   "description": "parser for xcodeproj/project.pbxproj files",
   "version": "0.9.3",
   "main": "index.js",
   "repository": {
-    "url": "https://github.com/alunny/node-xcode.git"
+    "url": "https://github.com/apache/cordova-node-xcode.git"
   },
   "engines": {
     "node": ">=0.6.7"
@@ -21,5 +21,29 @@
   "scripts": {
     "test": "node_modules/.bin/nodeunit test/parser test"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "contributors": [
+    {
+      "name": "Andrew Lunny",
+      "email": "alunny@gmail.com"
+    },
+    {
+      "name": "Anis Kadri"
+    },
+    {
+      "name": "Mike Reinstein"
+    },
+    {
+      "name": "Filip Maj"
+    },
+    {
+      "name": "Brett Rudd",
+      "email": "goya@apache.org"
+    },
+    {
+      "name": "Bob Easterday"
+    }
+
+  ]
+
 }
