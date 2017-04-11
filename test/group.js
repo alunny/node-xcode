@@ -243,8 +243,24 @@ exports.removeResourceFileFromGroup = {
     }
 }
 
-exports.retrieveBuildPropertyForBuild = {
-    'should retrieve valid build property ':function(test) {
+exports.retrieveBuildProperty = {
+    'should retrieve build property from default build':function(test) {
+        var productName = project.getBuildProperty('PRODUCT_NAME');
+
+        test.equal(productName, '"HelloCordova"');
+
+        test.done();
+    },
+    'should retrieve build property from default build of first target':function(test) {
+        project.hash = require('./fixtures/ReactNativeHelloWorld');
+
+        var productName = project.getBuildProperty('PRODUCT_NAME');
+
+        test.equal(productName, 'HelloWorld');
+
+        test.done();
+    },
+    'should retrieve build property from specific build': function(test) {
         var releaseTargetedDeviceFamily = project.getBuildProperty('TARGETED_DEVICE_FAMILY', 'Release');
         var debugTargetedDeviceFamily = project.getBuildProperty('TARGETED_DEVICE_FAMILY', 'Debug');
         var nonExistingProperty = project.getBuildProperty('FOO', 'Debug');
@@ -257,7 +273,7 @@ exports.retrieveBuildPropertyForBuild = {
 
         test.done();
     }
-}
+};
 
 exports.retrieveBuildConfigByName = {
     'should retrieve valid build config':function(test) {
