@@ -1,3 +1,17 @@
+
+
+# This project has been contributed to the Apache Cordova project and will be maintained in its new home there. Please update your upstreams, forks, and pull requests
+
+- cordova-node-xcode [`https://github.com/apache/cordova-node-xcode.git`](https://github.com/apache/cordova-node-xcode.git)
+
+- Apache Cordova [`https://cordova.apache.org`](https://cordova.apache.org)
+
+
+
+
+---
+
+
 # node-xcode
 
 > parser/toolkit for xcodeproj project files
@@ -17,7 +31,7 @@ Allows you to edit xcodeproject files and write them back out.
         myProj.addHeaderFile('foo.h');
         myProj.addSourceFile('foo.m');
         myProj.addFramework('FooKit.framework');
-        
+
         fs.writeFileSync(projectPath, myProj.writeSync());
         console.log('new project written');
     });
